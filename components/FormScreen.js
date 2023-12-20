@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import { TextInput, Button, Card } from 'react-native-paper';
 
-const FormScreen = () => {
+const FormScreen = ({navigation}) => {
   const [vehicleMake, setVehicleMake] = useState('');
   const [vehicleModel, setVehicleModel] = useState('');
   const [vehicleYear, setVehicleYear] = useState('');
@@ -19,6 +19,8 @@ const FormScreen = () => {
   const [witnessName, setWitnessName] = useState('');
   const [witnessContact, setWitnessContact] = useState('');
   const [additionalComments, setAdditionalComments] = useState('');
+  
+
 
   const handleFormSubmit = () => {
     console.log('Form submitted:', {
@@ -38,7 +40,10 @@ const FormScreen = () => {
       witnessContact,
       additionalComments,
     });
-    // Handle form submission logic here
+
+    navigation.navigate("RequestScreen")
+
+    
   };
 
   return (
