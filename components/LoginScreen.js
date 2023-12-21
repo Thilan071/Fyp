@@ -1,28 +1,34 @@
 // Import necessary components and modules
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet,Image } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import Capture from '../assets/capture.png';
+import { auth } from '../firebase';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
-const LoginScreen = ({navigation}
-  ) => {
+const LoginScreen = ({ navigation }) => {
   // State variables to store email and password
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   // Function to handle the login button press
   const handleLogin = () => {
-    navigation.navigate("FormScreen")
+    signInWithEmailAndPassword(auth, email, password)
+      .then((data) => {
+        navigation.navigate('FormScreen');
+      })
+      .catch((error) => {
+        console.log('Login Error', error);
+      });
+  };
 
-
+  const handleRegister = () => {
+    navigation.navigate('SignUpScreen');
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.logo}>Online Penalty Pay</Text>
-      <Image
-        source={Capture}
-           
-      />
+      <Image source={Capture} style={styles.logo} />
+      <Text style={styles.appName}>Online Penalty Pay</Text>
 
       {/* Email Input */}
       <TextInput
@@ -34,7 +40,7 @@ const LoginScreen = ({navigation}
 
       {/* Password Input */}
       <TextInput
-        style={styles.input}  // Ensure that the style is the same as the email input
+        style={styles.input} // Ensure that the style is the same as the email input
         placeholder="Password"
         secureTextEntry={true}
         onChangeText={(text) => setPassword(text)}
@@ -47,9 +53,11 @@ const LoginScreen = ({navigation}
 
       <Text style={styles.forgotPassword}>Forgot Password?</Text>
 
-      <Text style={styles.register}>
-        Don't have an account? <Text style={styles.registerLink}>Register here.</Text>
-      </Text>
+      <TouchableOpacity onPress={handleRegister}>
+        <Text style={styles.register}>
+          Don't have an account? <Text style={styles.registerLink}>Register here.</Text>
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -60,16 +68,23 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#ffffff',
+    backgroundColor: '#f0f0f0', // Set a light background color
   },
   logo: {
-    fontSize: 24,
+    width: 100,
+    height: 100,
     marginBottom: 20,
+  },
+  appName: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    color: '#3498db', // Set a primary color for the app name
   },
   input: {
     width: '80%',
     height: 40,
-    borderColor: 'gray',
+    borderColor: '#3498db', // Set an accent color for the border
     borderWidth: 1,
     marginBottom: 10,
     padding: 10,
@@ -94,6 +109,13 @@ const styles = StyleSheet.create({
   },
   registerLink: {
     color: '#3498db',
+    fontWeight: 'bold',
+  },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#FFFF00', // Set the background color to black
   },
 });
 

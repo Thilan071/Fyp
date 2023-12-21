@@ -5,6 +5,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import LoginScreen from '../Fyp/components/LoginScreen';
 import FormScreen from './components/FormScreen';
 import RequestScreen from '../Fyp/components/RequestScreen';
+import SignUpScreen from '../Fyp/components/SignUpScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -25,6 +26,11 @@ export default function App() {
         <Stack.Screen
           name="RequestScreen"
           component={RequestScreen}
+          options={{title: 'Welcome'}}
+        />
+        <Stack.Screen
+          name="SignUpScreen"
+          component={SignUpScreen}
           options={{title: 'Welcome'}}
         />
         {/* <Stack.Screen name="Profile" component={ProfileScreen} /> */}

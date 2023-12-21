@@ -1,9 +1,9 @@
 // FormScreen.js
 import React, { useState } from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { TextInput, Button, Card } from 'react-native-paper';
 
-const FormScreen = ({navigation}) => {
+const FormScreen = ({ navigation }) => {
   const [vehicleMake, setVehicleMake] = useState('');
   const [vehicleModel, setVehicleModel] = useState('');
   const [vehicleYear, setVehicleYear] = useState('');
@@ -19,8 +19,6 @@ const FormScreen = ({navigation}) => {
   const [witnessName, setWitnessName] = useState('');
   const [witnessContact, setWitnessContact] = useState('');
   const [additionalComments, setAdditionalComments] = useState('');
-  
-
 
   const handleFormSubmit = () => {
     console.log('Form submitted:', {
@@ -41,59 +39,88 @@ const FormScreen = ({navigation}) => {
       additionalComments,
     });
 
-    navigation.navigate("RequestScreen")
-
-    
+    navigation.navigate('RequestScreen');
   };
 
   return (
-    <ScrollView style={{ padding: 16 }}>
-      <Card style={{ marginVertical: 10, padding: 10 }}>
-        <Text style={{ fontSize: 18, marginBottom: 10 }}>Vehicle Information:</Text>
-        <TextInput label="Make" value={vehicleMake} onChangeText={setVehicleMake} mode="outlined" />
-        <TextInput label="Model" value={vehicleModel} onChangeText={setVehicleModel} mode="outlined" />
-        <TextInput label="Year" value={vehicleYear} onChangeText={setVehicleYear} mode="outlined" />
-        <TextInput label="Registration Number" value={registrationNumber} onChangeText={setRegistrationNumber} mode="outlined" />
-        <TextInput label="Color" value={color} onChangeText={setColor} mode="outlined" />
+    <ScrollView style={styles.container}>
+      <Card style={styles.card}>
+        <Text style={styles.cardTitle}>Vehicle Information:</Text>
+        <TextInput label="Make" value={vehicleMake} onChangeText={setVehicleMake} mode="outlined" style={styles.input} />
+        <TextInput label="Model" value={vehicleModel} onChangeText={setVehicleModel} mode="outlined" style={styles.input} />
+        <TextInput label="Year" value={vehicleYear} onChangeText={setVehicleYear} mode="outlined" style={styles.input} />
+        <TextInput label="Registration Number" value={registrationNumber} onChangeText={setRegistrationNumber} mode="outlined" style={styles.input} />
+        <TextInput label="Color" value={color} onChangeText={setColor} mode="outlined" style={styles.input} />
       </Card>
 
-      <Card style={{ marginVertical: 10, padding: 10 }}>
-        <Text style={{ fontSize: 18, marginBottom: 10 }}>Incident Details:</Text>
-        <TextInput label="Date" value={incidentDate} onChangeText={setIncidentDate} mode="outlined" />
-        <TextInput label="Time" value={incidentTime} onChangeText={setIncidentTime} mode="outlined" />
-        <TextInput label="Location" value={incidentLocation} onChangeText={setIncidentLocation} mode="outlined" />
-        <TextInput label="Violation Description" value={violationDescription} onChangeText={setViolationDescription} mode="outlined" />
+      <Card style={styles.card}>
+        <Text style={styles.cardTitle}>Incident Details:</Text>
+        <TextInput label="Date" value={incidentDate} onChangeText={setIncidentDate} mode="outlined" style={styles.input} />
+        <TextInput label="Time" value={incidentTime} onChangeText={setIncidentTime} mode="outlined" style={styles.input} />
+        <TextInput label="Location" value={incidentLocation} onChangeText={setIncidentLocation} mode="outlined" style={styles.input} />
+        <TextInput label="Violation Description" value={violationDescription} onChangeText={setViolationDescription} mode="outlined" style={styles.input} />
       </Card>
 
-      <Card style={{ marginVertical: 10, padding: 10 }}>
-        <Text style={{ fontSize: 18, marginBottom: 10 }}>Driver Information:</Text>
-        <TextInput label="Driver's Name" value={driverName} onChangeText={setDriverName} mode="outlined" />
-        <TextInput label="Driver's License Number" value={driverLicenseNumber} onChangeText={setDriverLicenseNumber} mode="outlined" />
-        <TextInput label="Driver's Contact" value={driverContact} onChangeText={setDriverContact} mode="outlined" />
+      <Card style={styles.card}>
+        <Text style={styles.cardTitle}>Driver Information:</Text>
+        <TextInput label="Driver's Name" value={driverName} onChangeText={setDriverName} mode="outlined" style={styles.input} />
+        <TextInput label="Driver's License Number" value={driverLicenseNumber} onChangeText={setDriverLicenseNumber} mode="outlined" style={styles.input} />
+        <TextInput label="Driver's Contact" value={driverContact} onChangeText={setDriverContact} mode="outlined" style={styles.input} />
       </Card>
 
-      <Card style={{ marginVertical: 10, padding: 10 }}>
-        <Text style={{ fontSize: 18, marginBottom: 10 }}>Witness Information:</Text>
-        <TextInput label="Witness Name" value={witnessName} onChangeText={setWitnessName} mode="outlined" />
-        <TextInput label="Witness Contact" value={witnessContact} onChangeText={setWitnessContact} mode="outlined" />
+      <Card style={styles.card}>
+        <Text style={styles.cardTitle}>Witness Information:</Text>
+        <TextInput label="Witness Name" value={witnessName} onChangeText={setWitnessName} mode="outlined" style={styles.input} />
+        <TextInput label="Witness Contact" value={witnessContact} onChangeText={setWitnessContact} mode="outlined" style={styles.input} />
       </Card>
 
-      <Card style={{ marginVertical: 10, padding: 10 }}>
-        <Text style={{ fontSize: 18, marginBottom: 10 }}>Additional Comments:</Text>
+      <Card style={styles.card}>
+        <Text style={styles.cardTitle}>Additional Comments:</Text>
         <TextInput
           multiline
           label="Add any additional comments here"
           value={additionalComments}
           onChangeText={setAdditionalComments}
           mode="outlined"
+          style={styles.input}
         />
       </Card>
 
-      <Button mode="contained" style={{ marginTop: 20 }} onPress={handleFormSubmit}>
+      <Button mode="contained" style={styles.submitButton} onPress={handleFormSubmit}>
         Submit
       </Button>
     </ScrollView>
+    
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 16,
+    backgroundColor: '#f0f0f0',
+  },
+  card: {
+    marginVertical: 10,
+    padding: 10,
+    backgroundColor: '#ffffff',
+    borderRadius: 8,
+    elevation: 3,
+  },
+  cardTitle: {
+    fontSize: 18,
+    marginBottom: 10,
+    color: '#3498db',
+  },
+  input: {
+    backgroundColor: '#ecf0f1',
+    marginBottom: 10,
+  },
+  submitButton: {
+    marginTop: 20,
+    backgroundColor: '#3498db',
+    borderRadius: 4,
+  },
+  
+});
 
 export default FormScreen;

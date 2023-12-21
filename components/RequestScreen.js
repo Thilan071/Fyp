@@ -40,6 +40,7 @@ const RequestScreen = () => {
         placeholder="Phone Number"
         onChangeText={(text) => setPhoneNumber(text)}
         value={phoneNumber}
+        keyboardType="phone-pad" // Set keyboard type to phone number
       />
 
       {/* Send Details Button */}
@@ -55,19 +56,22 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#ffffff',
+    backgroundColor: '#f0f0f0',
+    padding: 16,
   },
   title: {
     fontSize: 24,
     marginBottom: 20,
+    color: '#3498db',
   },
   input: {
     width: '80%',
     height: 40,
-    borderColor: 'gray',
+    borderColor: '#3498db',
     borderWidth: 1,
     marginBottom: 10,
     padding: 10,
+    borderRadius: 4,
   },
   button: {
     backgroundColor: '#3498db',
