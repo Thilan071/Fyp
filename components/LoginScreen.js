@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#FFFF00', // Set the background color to black
+    backgroundColor: '#F8F8F8', // Set the background color to black
   },
 });
 
