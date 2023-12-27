@@ -1,4 +1,3 @@
-// Import necessary components and modules
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import Capture from '../assets/capture.png';
@@ -6,11 +5,9 @@ import { auth } from '../firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 
 const LoginScreen = ({ navigation }) => {
-  // State variables to store email and password
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  // Function to handle the login button press
   const handleLogin = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((data) => {
@@ -30,7 +27,6 @@ const LoginScreen = ({ navigation }) => {
       <Image source={Capture} style={styles.logo} />
       <Text style={styles.appName}>Online Penalty Pay</Text>
 
-      {/* Email Input */}
       <TextInput
         style={styles.input}
         placeholder="Officer ID"
@@ -38,9 +34,8 @@ const LoginScreen = ({ navigation }) => {
         value={email}
       />
 
-      {/* Password Input */}
       <TextInput
-        style={styles.input} // Ensure that the style is the same as the email input
+        style={styles.input} 
         placeholder="Password"
         secureTextEntry={true}
         onChangeText={(text) => setPassword(text)}
@@ -62,13 +57,12 @@ const LoginScreen = ({ navigation }) => {
   );
 };
 
-// Styles for the components
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#f0f0f0', // Set a light background color
+    backgroundColor: '#f0f0f0', 
   },
   logo: {
     width: 100,
@@ -79,12 +73,12 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
-    color: '#3498db', // Set a primary color for the app name
+    color: '#3498db', 
   },
   input: {
     width: '80%',
     height: 40,
-    borderColor: '#3498db', // Set an accent color for the border
+    borderColor: '#3498db', 
     borderWidth: 1,
     marginBottom: 10,
     padding: 10,
@@ -115,7 +109,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F8F8F8', // Set the background color to black
+    backgroundColor: '#F8F8F8', 
   },
 });
 

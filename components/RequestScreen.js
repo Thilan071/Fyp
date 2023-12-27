@@ -7,8 +7,7 @@ const RequestScreen = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
 
   const handleSendDetails = () => {
-    // Implement the logic to send details
-    // For now, you can just log the values
+
     console.log('Vehicle Number:', vehicleNumber);
     console.log('Penalty Person Name:', penaltyPersonName);
     console.log('Phone Number:', phoneNumber);
@@ -18,7 +17,6 @@ const RequestScreen = () => {
     <View style={styles.container}>
       <Text style={styles.title}>Request Details</Text>
 
-      {/* Vehicle Number Input */}
       <TextInput
         style={styles.input}
         placeholder="Vehicle Number"
@@ -26,7 +24,6 @@ const RequestScreen = () => {
         value={vehicleNumber}
       />
 
-      {/* Penalty Person's Name Input */}
       <TextInput
         style={styles.input}
         placeholder="Penalty Person's Name"
@@ -34,16 +31,14 @@ const RequestScreen = () => {
         value={penaltyPersonName}
       />
 
-      {/* Phone Number Input */}
       <TextInput
         style={styles.input}
         placeholder="Phone Number"
         onChangeText={(text) => setPhoneNumber(text)}
         value={phoneNumber}
-        keyboardType="phone-pad" // Set keyboard type to phone number
+        keyboardType="phone-pad" 
       />
 
-      {/* Send Details Button */}
       <TouchableOpacity style={styles.button} onPress={handleSendDetails}>
         <Text style={styles.buttonText}>Send Details</Text>
       </TouchableOpacity>

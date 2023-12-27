@@ -33,7 +33,6 @@ export default function App() {
           component={SignUpScreen}
           options={{title: 'Welcome'}}
         />
-        {/* <Stack.Screen name="Profile" component={ProfileScreen} /> */}
       </Stack.Navigator>
   </NavigationContainer>
   );

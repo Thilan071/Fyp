@@ -1,4 +1,3 @@
-// FormScreen.js
 import React, { useState } from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { TextInput, Button, Card } from 'react-native-paper';
@@ -90,7 +89,6 @@ const FormScreen = ({ navigation }) => {
         Submit
       </Button>
     </ScrollView>
-    
   );
 };
 
