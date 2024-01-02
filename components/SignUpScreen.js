@@ -4,11 +4,18 @@ import { auth } from '../firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 
 const SignUpScreen = ({ navigation }) => {
-  const [officerPassword, setOfficerPassword] = useState('');
+  const [officerName, setOfficerName] = useState('');
+  const [officerUnit, setOfficerUnit] = useState('');
+  const [officerId, setOfficerId] = useState('');
   const [officerEmail, setOfficerEmail] = useState('');
+  const [officerPassword, setOfficerPassword] = useState('');
 
   const handleSignUp = async () => {
     try {
+      console.log('Officer Name:', officerName);
+      console.log('Officer Unit:', officerUnit);
+      console.log('Officer ID:', officerId);
+
       await createUserWithEmailAndPassword(auth, officerEmail, officerPassword);
       navigation.navigate('LoginScreen');
     } catch (error) {
@@ -20,6 +27,24 @@ const SignUpScreen = ({ navigation }) => {
     <View style={styles.container}>
       <Text style={styles.heading}>Create Your Account</Text>
 
+      <TextInput
+        style={styles.input}
+        placeholder="Officer Name"
+        onChangeText={(text) => setOfficerName(text)}
+        value={officerName}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Officer Unit"
+        onChangeText={(text) => setOfficerUnit(text)}
+        value={officerUnit}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Officer ID"
+        onChangeText={(text) => setOfficerId(text)}
+        value={officerId}
+      />
       <TextInput
         style={styles.input}
         placeholder="Officer Email"
