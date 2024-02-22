@@ -38,7 +38,8 @@ const FormScreen = ({ navigation }) => {
       additionalComments,
     });
 
-    navigation.navigate('RequestScreen');
+    navigation.navigate('CameraScreen');
+
   };
 
   return (
@@ -83,6 +84,10 @@ const FormScreen = ({ navigation }) => {
           mode="outlined"
           style={styles.input}
         />
+      </Card>
+      <Card style={styles.card}>
+        <Text style={styles.cardTitle}>Camera:</Text>
+        
       </Card>
 
       <Button mode="contained" style={styles.submitButton} onPress={handleFormSubmit}>

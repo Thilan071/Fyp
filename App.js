@@ -6,6 +6,7 @@ import LoginScreen from '../Fyp/components/LoginScreen';
 import FormScreen from './components/FormScreen';
 import RequestScreen from '../Fyp/components/RequestScreen';
 import SignUpScreen from '../Fyp/components/SignUpScreen';
+import CameraScreen from './components/CameraScreen ';
 
 const Stack = createNativeStackNavigator();
 
@@ -33,6 +34,12 @@ export default function App() {
           component={SignUpScreen}
           options={{title: 'Welcome'}}
         />
+        
+        <Stack.Screen
+  name="CameraScreen" // Removed the trailing space in the name
+  component={CameraScreen} // Removed the space after CameraScreen
+  options={{title: 'Welcome'}}
+/>
       </Stack.Navigator>
   </NavigationContainer>
   );
