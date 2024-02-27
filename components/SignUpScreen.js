@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { auth } from '../firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { db } from '../firebase';
+import { doc, setDoc } from 'firebase/firestore';
 
 const SignUpScreen = ({ navigation }) => {
   const [officerName, setOfficerName] = useState('');
@@ -21,6 +23,21 @@ const SignUpScreen = ({ navigation }) => {
     } catch (error) {
       console.error('Error with SignUp', error);
     }
+  };
+  const addDataToFirestore = async (values) => {
+    console.log('Val', values);
+
+    try {
+      await setDoc(doc(db, 'OFFICER DETAILS',officerEmail), {
+        officerName: officerName,
+        officerUnit: officerUnit,
+        officerId:officerId,
+        officerEmail:officerEmail,
+        officerPassword:officerPassword
+      });
+    } catch (error) {
+      console.log('adding data firestore error', error);
+    } 
   };
 
   return (
@@ -59,7 +76,7 @@ const SignUpScreen = ({ navigation }) => {
         value={officerPassword}
       />
 
-      <TouchableOpacity style={styles.button} onPress={handleSignUp}>
+      <TouchableOpacity style={styles.button} onPress={()=>{addDataToFirestore(),handleSignUp()}}>
         <Text style={styles.buttonText}>Create Your Account</Text>
       </TouchableOpacity>
     </View>

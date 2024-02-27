@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, StyleSheet } from 'react-native';
-import { TextInput, Button, Card } from 'react-native-paper';
+import { ScrollView, StyleSheet, View, Text, Button } from 'react-native';
+import { TextInput, Card } from 'react-native-paper';
+import { doc, setDoc } from 'firebase/firestore';
+import { db } from '../firebase';
 
 const FormScreen = ({ navigation }) => {
+  const [formSection, setFormSection] = useState(1); 
+  
   const [vehicleMake, setVehicleMake] = useState('');
   const [vehicleModel, setVehicleModel] = useState('');
   const [vehicleYear, setVehicleYear] = useState('');
@@ -19,7 +23,7 @@ const FormScreen = ({ navigation }) => {
   const [witnessContact, setWitnessContact] = useState('');
   const [additionalComments, setAdditionalComments] = useState('');
 
-  const handleFormSubmit = () => {
+  const handleSubmit = () => {
     console.log('Form submitted:', {
       vehicleMake,
       vehicleModel,
@@ -39,91 +43,104 @@ const FormScreen = ({ navigation }) => {
     });
 
     navigation.navigate('CameraScreen');
+  };
+  const addDataToFirestore = async (values) => {
+    console.log('Val', values);
 
+    try {
+      await setDoc(doc(db, 'DRIVER DETAILS', driverLicenseNumber), {
+        vehicleMake: vehicleMake,
+        vehicleModel: vehicleModel,
+        vehicleYear: vehicleYear,
+        registrationNumber: registrationNumber,
+        color: color,
+        incidentDate: incidentDate,
+        incidentTime: incidentTime,
+        incidentLocation: incidentLocation,
+        violationDescription: violationDescription,
+        driverName:driverLicenseNumber,
+        driverLicenseNumber: driverLicenseNumber,
+        driverContact: driverContact,
+        witnessName: witnessName,
+        witnessContact: witnessContact,
+        additionalComments: additionalComments
+
+      });
+    } catch (error) {
+      console.log('adding data firestore error', error);
+    } 
   };
 
   return (
     <ScrollView style={styles.container}>
-      <Card style={styles.card}>
-        <Text style={styles.cardTitle}>Vehicle Information:</Text>
-        <TextInput label="Make" value={vehicleMake} onChangeText={setVehicleMake} mode="outlined" style={styles.input} />
-        <TextInput label="Model" value={vehicleModel} onChangeText={setVehicleModel} mode="outlined" style={styles.input} />
-        <TextInput label="Year" value={vehicleYear} onChangeText={setVehicleYear} mode="outlined" style={styles.input} />
-        <TextInput label="Registration Number" value={registrationNumber} onChangeText={setRegistrationNumber} mode="outlined" style={styles.input} />
-        <TextInput label="Color" value={color} onChangeText={setColor} mode="outlined" style={styles.input} />
-      </Card>
+      {formSection === 1 && (
+        <>
+          <Card style={styles.card}>
+            <Text style={styles.cardTitle}>Vehicle Information:</Text>
+            <TextInput label="Make" value={vehicleMake} onChangeText={setVehicleMake} style={styles.input} />
+            <TextInput label="Model" value={vehicleModel} onChangeText={setVehicleModel} style={styles.input} />
+            <TextInput label="Year" value={vehicleYear} onChangeText={setVehicleYear} style={styles.input} />
+            <TextInput label="Registration Number" value={registrationNumber} onChangeText={setRegistrationNumber} style={styles.input} />
+            <TextInput label="Color" value={color} onChangeText={setColor} style={styles.input} />
+          </Card>
 
-      <Card style={styles.card}>
-        <Text style={styles.cardTitle}>Incident Details:</Text>
-        <TextInput label="Date" value={incidentDate} onChangeText={setIncidentDate} mode="outlined" style={styles.input} />
-        <TextInput label="Time" value={incidentTime} onChangeText={setIncidentTime} mode="outlined" style={styles.input} />
-        <TextInput label="Location" value={incidentLocation} onChangeText={setIncidentLocation} mode="outlined" style={styles.input} />
-        <TextInput label="Violation Description" value={violationDescription} onChangeText={setViolationDescription} mode="outlined" style={styles.input} />
-      </Card>
+          <Card style={styles.card}>
+            <Text style={styles.cardTitle}>Incident Details:</Text>
+            <TextInput label="Date" value={incidentDate} onChangeText={setIncidentDate} style={styles.input} />
+            <TextInput label="Time" value={incidentTime} onChangeText={setIncidentTime} style={styles.input} />
+            <TextInput label="Location" value={incidentLocation} onChangeText={setIncidentLocation} style={styles.input} />
+            <TextInput label="Violation Description" value={violationDescription} onChangeText={setViolationDescription} style={styles.input} multiline />
+          </Card>
 
-      <Card style={styles.card}>
-        <Text style={styles.cardTitle}>Driver Information:</Text>
-        <TextInput label="Driver's Name" value={driverName} onChangeText={setDriverName} mode="outlined" style={styles.input} />
-        <TextInput label="Driver's License Number" value={driverLicenseNumber} onChangeText={setDriverLicenseNumber} mode="outlined" style={styles.input} />
-        <TextInput label="Driver's Contact" value={driverContact} onChangeText={setDriverContact} mode="outlined" style={styles.input} />
-      </Card>
+          <Button title="Next" onPress={() => setFormSection(2)} />
+        </>
+      )}
 
-      <Card style={styles.card}>
-        <Text style={styles.cardTitle}>Witness Information:</Text>
-        <TextInput label="Witness Name" value={witnessName} onChangeText={setWitnessName} mode="outlined" style={styles.input} />
-        <TextInput label="Witness Contact" value={witnessContact} onChangeText={setWitnessContact} mode="outlined" style={styles.input} />
-      </Card>
+      {formSection === 2 && (
+        <>
+          <Card style={styles.card}>
+            <Text style={styles.cardTitle}>Driver Information:</Text>
+            <TextInput label="Driver's Name" value={driverName} onChangeText={setDriverName} style={styles.input} />
+            <TextInput label="Driver's License Number" value={driverLicenseNumber} onChangeText={setDriverLicenseNumber} style={styles.input} />
+            <TextInput label="Driver's Contact" value={driverContact} onChangeText={setDriverContact} style={styles.input} />
+          </Card>
 
-      <Card style={styles.card}>
-        <Text style={styles.cardTitle}>Additional Comments:</Text>
-        <TextInput
-          multiline
-          label="Add any additional comments here"
-          value={additionalComments}
-          onChangeText={setAdditionalComments}
-          mode="outlined"
-          style={styles.input}
-        />
-      </Card>
-      <Card style={styles.card}>
-        <Text style={styles.cardTitle}>Camera:</Text>
-        
-      </Card>
+          <Card style={styles.card}>
+            <Text style={styles.cardTitle}>Witness Information:</Text>
+            <TextInput label="Witness Name" value={witnessName} onChangeText={setWitnessName} style={styles.input} />
+            <TextInput label="Witness Contact" value={witnessContact} onChangeText={setWitnessContact} style={styles.input} />
+          </Card>
 
-      <Button mode="contained" style={styles.submitButton} onPress={handleFormSubmit}>
-        Submit
-      </Button>
+          <Card style={styles.card}>
+            <Text style={styles.cardTitle}>Additional Comments:</Text>
+            <TextInput label="Additional Comments" value={additionalComments} onChangeText={setAdditionalComments} style={styles.input} multiline numberOfLines={4} />
+          </Card>
+
+          <Button title="Submit" onPress={()=>{addDataToFirestore(),handleSubmit()}} />
+        </>
+      )}
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    padding: 16,
-    backgroundColor: '#f0f0f0',
+    flex: 1,
+    padding: 10,
+    backgroundColor: '#fff',
   },
   card: {
-    marginVertical: 10,
+    marginBottom: 10,
     padding: 10,
-    backgroundColor: '#ffffff',
-    borderRadius: 8,
-    elevation: 3,
   },
   cardTitle: {
-    fontSize: 18,
     marginBottom: 10,
-    color: '#3498db',
+    fontWeight: 'bold',
+    fontSize: 18,
   },
   input: {
-    backgroundColor: '#ecf0f1',
     marginBottom: 10,
   },
-  submitButton: {
-    marginTop: 20,
-    backgroundColor: '#3498db',
-    borderRadius: 4,
-  },
-  
 });
 
 export default FormScreen;
