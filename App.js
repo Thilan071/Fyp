@@ -8,6 +8,7 @@ import RequestScreen from '../Fyp/components/RequestScreen';
 import SignUpScreen from '../Fyp/components/SignUpScreen';
 import CameraScreen from './components/CameraScreen ';
 import BottomNavigation from './components/BottomNavigation';
+import ProfileScreen from './components/ProfileScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -15,7 +16,7 @@ export default function App() {
   return (
     <NavigationContainer>
 <Stack.Navigator>
-        <Stack.Screen
+        {/* <Stack.Screen
           name="LoginScreen"
           component={LoginScreen}
           options={{title: 'Welcome'}}
@@ -34,12 +35,13 @@ export default function App() {
           name="SignUpScreen"
           component={SignUpScreen}
           options={{title: 'Welcome'}}
-        />
-        {/* <Stack.Screen
-          name="BottomNavigation"
-          component={BottomNavigation}
-          options={{title: 'Welcome'}}
         /> */}
+        
+        <Stack.Screen
+          name="ProfileScreen"
+          component={ProfileScreen}
+          options={{title: 'ProfileScreen'}}
+        />
         
         <Stack.Screen
   name="CameraScreen" 
