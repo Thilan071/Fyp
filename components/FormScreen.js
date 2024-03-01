@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
-import { ScrollView, StyleSheet, View, Text, Button } from 'react-native';
+import {
+  ScrollView,
+  StyleSheet,
+  View,
+  Text,
+  Button,
+  TouchableOpacity,
+} from 'react-native';
 import { TextInput, Card } from 'react-native-paper';
 import { doc, setDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 
 const FormScreen = ({ navigation }) => {
   const [formSection, setFormSection] = useState(1);
-
   const [vehicleMake, setVehicleMake] = useState('');
   const [vehicleModel, setVehicleModel] = useState('');
   const [vehicleYear, setVehicleYear] = useState('');
@@ -71,121 +77,138 @@ const FormScreen = ({ navigation }) => {
   };
 
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
       {formSection === 1 && (
         <>
-          <Card style={styles.card}>
-            <ScrollView>
-              <Text style={styles.cardTitle}>Vehicle Information:</Text>
-              <TextInput
-                label="Make"
-                value={vehicleMake}
-                onChangeText={setVehicleMake}
-                style={styles.input}
-              />
-              <TextInput
-                label="Model"
-                value={vehicleModel}
-                onChangeText={setVehicleModel}
-                style={styles.input}
-              />
-              <TextInput
-                label="Year"
-                value={vehicleYear}
-                onChangeText={setVehicleYear}
-                style={styles.input}
-              />
-              <TextInput
-                label="Registration Number"
-                value={registrationNumber}
-                onChangeText={setRegistrationNumber}
-                style={styles.input}
-              />
-              <TextInput
-                label="Color"
-                value={color}
-                onChangeText={setColor}
-                style={styles.input}
-              />
-              <Text style={styles.cardTitle}>Incident Details:</Text>
-              <TextInput
-                label="Date"
-                value={incidentDate}
-                onChangeText={setIncidentDate}
-                style={styles.input}
-              />
-              <TextInput
-                label="Time"
-                value={incidentTime}
-                onChangeText={setIncidentTime}
-                style={styles.input}
-              />
-              <TextInput
-                label="Location"
-                value={incidentLocation}
-                onChangeText={setIncidentLocation}
-                style={styles.input}
-              />
-              <TextInput
-                label="Violation Description"
-                value={violationDescription}
-                onChangeText={setViolationDescription}
-                style={styles.input}
-                multiline
-              />
-              <Text style={styles.cardTitle}>Driver Information:</Text>
-              <TextInput
-                label="Driver's Name"
-                value={driverName}
-                onChangeText={setDriverName}
-                style={styles.input}
-              />
-              <TextInput
-                label="Driver's License Number"
-                value={driverLicenseNumber}
-                onChangeText={setDriverLicenseNumber}
-                style={styles.input}
-              />
-              <TextInput
-                label="Driver's Contact"
-                value={driverContact}
-                onChangeText={setDriverContact}
-                style={styles.input}
-              />
-              <Button title="Next" onPress={() => setFormSection(2)} />
-            </ScrollView>
-          </Card>
-          {/* 
-          <Card style={styles.card}>
-            <Text style={styles.cardTitle}>Incident Details:</Text>
-            <TextInput
-              label="Date"
-              value={incidentDate}
-              onChangeText={setIncidentDate}
-              style={styles.input}
-            />
-            <TextInput
-              label="Time"
-              value={incidentTime}
-              onChangeText={setIncidentTime}
-              style={styles.input}
-            />
-            <TextInput
-              label="Location"
-              value={incidentLocation}
-              onChangeText={setIncidentLocation}
-              style={styles.input}
-            />
-            <TextInput
-              label="Violation Description"
-              value={violationDescription}
-              onChangeText={setViolationDescription}
-              style={styles.input}
-              multiline
-            />
-          </Card> */}
+          <View style={{ marginBottom: 10 }}>
+            <Card style={styles.card}>
+              <ScrollView>
+                <Text style={[styles.cardTitle, { marginTop: 5 }]}>
+                  Vehicle Information:
+                </Text>
 
-          <Button title="Next" onPress={() => setFormSection(2)} />
+                <View style={styles.textsAndInputs}>
+                  <Text style={styles.mainTitle}>Make</Text>
+
+                  <TextInput
+                    placeholder="Toyota"
+                    placeholderTextColor="#C7D0D9"
+                    value={vehicleMake}
+                    onChangeText={setVehicleMake}
+                    style={styles.input}
+                    underlineColor="white"
+                  />
+                </View>
+
+                <View>
+                  <Text style={styles.mainTitle}>Model</Text>
+                  <TextInput
+                    placeholder="Civic"
+                    placeholderTextColor="#C7D0D9"
+                    value={vehicleModel}
+                    onChangeText={setVehicleModel}
+                    style={styles.input}
+                    underlineColor="white"
+                  />
+                </View>
+
+                <View>
+                  <Text style={styles.mainTitle}>Year</Text>
+                  <TextInput
+                    placeholder="2020"
+                    placeholderTextColor="#C7D0D9"
+                    value={vehicleYear}
+                    onChangeText={setVehicleYear}
+                    style={styles.input}
+                    underlineColor="white"
+                  />
+                </View>
+
+                <View>
+                  <Text style={styles.mainTitle}>Registration Number</Text>
+                  <TextInput
+                    placeholder="ABC123"
+                    placeholderTextColor="#C7D0D9"
+                    value={registrationNumber}
+                    onChangeText={setRegistrationNumber}
+                    style={styles.input}
+                    underlineColor="white"
+                  />
+                </View>
+                <View>
+                  <Text style={styles.mainTitle}>Color</Text>
+                  <TextInput
+                    placeholder="Blue"
+                    placeholderTextColor="#C7D0D9"
+                    value={color}
+                    onChangeText={setColor}
+                    style={styles.input}
+                    underlineColor="white"
+                  />
+                </View>
+
+                <Text style={[styles.cardTitle, { marginTop: 20 }]}>
+                  Incident Details:
+                </Text>
+                <View>
+                  <Text style={styles.mainTitle}>Date</Text>
+                  <TextInput
+                    placeholder="YYYY-MM-DD"
+                    placeholderTextColor="#C7D0D9"
+                    value={incidentDate}
+                    onChangeText={setIncidentDate}
+                    style={styles.input}
+                    underlineColor="white"
+                  />
+                </View>
+
+                <View>
+                  <Text style={styles.mainTitle}>Time</Text>
+                  <TextInput
+                    placeholder="HH:MM AM/PM"
+                    placeholderTextColor="#C7D0D9"
+                    value={incidentTime}
+                    onChangeText={setIncidentTime}
+                    style={styles.input}
+                    underlineColor="white"
+                  />
+                </View>
+
+                <View>
+                  <Text style={styles.mainTitle}>Location</Text>
+                  <TextInput
+                    placeholder="Street address, City"
+                    placeholderTextColor="#C7D0D9"
+                    value={incidentLocation}
+                    onChangeText={setIncidentLocation}
+                    style={styles.input}
+                    underlineColor="white"
+                  />
+                </View>
+                <View>
+                  <Text style={styles.mainTitle}>Violation Description </Text>
+                  <TextInput
+                    placeholder="Speeding"
+                    placeholderTextColor="#C7D0D9"
+                    value={violationDescription}
+                    onChangeText={setViolationDescription}
+                    style={styles.input}
+                    underlineColor="white"
+                    multiline
+                  />
+                </View>
+
+                <View>
+                  <TouchableOpacity
+                    onPress={() => setFormSection(2)}
+                    style={styles.button}
+                  >
+                    <Text style={styles.text}> Next </Text>
+                  </TouchableOpacity>
+                </View>
+              </ScrollView>
+            </Card>
+          </View>
         </>
       )}
 
@@ -250,15 +273,25 @@ const FormScreen = ({ navigation }) => {
           />
         </>
       )}
-    </ScrollView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  button: {
+    backgroundColor: '#2352D8',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 8, // Adjust the value to change the degree of rounding
+  },
+  text: {
+    color: '#ffffff',
+    fontSize: 16,
+    textAlign: 'center',
+  },
   submitButton: {
-    paddingBottom: 3,
-    marginBottom: 5,
-    bottom: 6,
+    borderRadius: 8,
+    width: 358,
   },
   container: {
     flex: 1,
@@ -266,15 +299,16 @@ const styles = StyleSheet.create({
     backgroundColor: ' #F7F9FA',
   },
   card: {
-    marginBottom: 10,
-    padding: 10,
+    padding: 15,
     backgroundColor: '#FFFFFF',
     marginHorizontal: 15,
+    marginVertical: 50,
   },
   cardTitle: {
     marginBottom: 10,
     fontWeight: 'bold',
-    fontSize: 18,
+    color: '#A8B4BF',
+    fontSize: 16,
   },
   input: {
     backgroundColor: '#ff000000',
@@ -288,6 +322,12 @@ const styles = StyleSheet.create({
     height: 48,
     paddingLeft: 16,
     paddingRight: 8,
+  },
+  textsAndInputs: {
+    display: 'flex',
+  },
+  mainTitle: {
+    color: '#576573',
   },
 });
 
