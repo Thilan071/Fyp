@@ -84,7 +84,7 @@ const FormScreen = ({ navigation }) => {
             <Card style={styles.card}>
               <ScrollView>
                 <Text style={[styles.cardTitle, { marginTop: 5 }]}>
-                  Vehicle Information:
+                  Vehicle Information
                 </Text>
 
                 <View style={styles.textsAndInputs}>
@@ -148,7 +148,7 @@ const FormScreen = ({ navigation }) => {
                 </View>
 
                 <Text style={[styles.cardTitle, { marginTop: 20 }]}>
-                  Incident Details:
+                  Incident Details
                 </Text>
                 <View>
                   <Text style={styles.mainTitle}>Date</Text>
@@ -214,63 +214,101 @@ const FormScreen = ({ navigation }) => {
 
       {formSection === 2 && (
         <>
-          <Card style={styles.card}>
-            <Text style={styles.cardTitle}>Driver Information:</Text>
-            <TextInput
-              label="Driver's Name"
-              value={driverName}
-              onChangeText={setDriverName}
-              style={styles.input}
-            />
-            <TextInput
-              label="Driver's License Number"
-              value={driverLicenseNumber}
-              onChangeText={setDriverLicenseNumber}
-              style={styles.input}
-            />
-            <TextInput
-              label="Driver's Contact"
-              value={driverContact}
-              onChangeText={setDriverContact}
-              style={styles.input}
-            />
-          </Card>
+          <View style={{ marginBottom: 10 }}>
+            <Card style={styles.card}>
+              <ScrollView>
+                <Text style={styles.cardTitle}>Driver Information:</Text>
+                <View>
+                  <Text style={styles.mainTitle}>Driver's Name</Text>
+                  <TextInput
+                    placeholder="Thilan"
+                    placeholderTextColor="#C7D0D9"
+                    value={driverName}
+                    onChangeText={setDriverName}
+                    style={styles.input}
+                    underlineColor="white"
+                  />
+                </View>
 
-          <Card style={styles.card}>
-            <Text style={styles.cardTitle}>Witness Information:</Text>
-            <TextInput
-              label="Witness Name"
-              value={witnessName}
-              onChangeText={setWitnessName}
-              style={styles.input}
-            />
-            <TextInput
-              label="Witness Contact"
-              value={witnessContact}
-              onChangeText={setWitnessContact}
-              style={styles.input}
-            />
-          </Card>
+                <View>
+                  <Text style={styles.mainTitle}> Driver's License Number</Text>
+                  <TextInput
+                    placeholder="200120702665"
+                    placeholderTextColor="#C7D0D9"
+                    value={driverLicenseNumber}
+                    onChangeText={setDriverLicenseNumber}
+                    style={styles.input}
+                    underlineColor="white"
+                  />
+                </View>
 
-          <Card style={styles.card}>
-            <Text style={styles.cardTitle}>Additional Comments:</Text>
-            <TextInput
-              label="Additional Comments"
-              value={additionalComments}
-              onChangeText={setAdditionalComments}
-              style={styles.input}
-              multiline
-              numberOfLines={4}
-            />
-          </Card>
+                <View>
+                  <Text style={styles.mainTitle}>Driver's Contact</Text>
+                  <TextInput
+                    placeholder="0714074987"
+                    placeholderTextColor="#C7D0D9"
+                    value={driverContact}
+                    onChangeText={setDriverContact}
+                    style={styles.input}
+                    underlineColor="white"
+                  />
+                </View>
 
-          <Button
-            style={styles.submitButton}
-            title="Submit"
-            onPress={() => {
-              addDataToFirestore(), handleSubmit();
-            }}
-          />
+                <Text style={[styles.cardTitle, { marginTop: 20 }]}>
+                  Witness Information:
+                </Text>
+
+                <View>
+                  <Text style={styles.mainTitle}> Witness Name</Text>
+                  <TextInput
+                    placeholder="Lasith Herath"
+                    placeholderTextColor="#C7D0D9"
+                    value={witnessName}
+                    onChangeText={setWitnessName}
+                    style={styles.input}
+                    underlineColor="white"
+                  />
+                </View>
+
+                <View>
+                  <Text style={styles.mainTitle}>Witness Contact </Text>
+                  <TextInput
+                    placeholder="0789833773"
+                    placeholderTextColor="#C7D0D9"
+                    value={witnessContact}
+                    onChangeText={setWitnessContact}
+                    style={styles.input}
+                    underlineColor="white"
+                  />
+                </View>
+
+                <View>
+                  <Text style={styles.mainTitle}>Additional Comments</Text>
+                  <TextInput
+                    placeholder="Comment....."
+                    placeholderTextColor="#C7D0D9"
+                    value={additionalComments}
+                    onChangeText={setAdditionalComments}
+                    style={styles.input}
+                    multiline
+                    numberOfLines={4}
+                    underlineColor="white"
+                  />
+                </View>
+
+                <View>
+                  <TouchableOpacity
+                    onPress={() => {
+                      addDataToFirestore(), handleSubmit();
+                    }}
+                    style={styles.button}
+                  >
+                    <Text style={styles.text}> Submit </Text>
+                  </TouchableOpacity>
+                </View>
+              </ScrollView>
+            </Card>
+          </View>
         </>
       )}
     </View>

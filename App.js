@@ -18,12 +18,12 @@ export default function App() {
         <Stack.Screen
           name="LoginScreen"
           component={LoginScreen}
-          options={{ title: 'Welcome' }}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name="FormScreen"
           component={BottomTabs}
-          options={{ title: 'Welcome' }}
+          options={{ title: 'Form', headerShown: false }}
         />
         <Stack.Screen
           name="RequestScreen"
@@ -33,7 +33,7 @@ export default function App() {
         <Stack.Screen
           name="SignUpScreen"
           component={SignUpScreen}
-          options={{ title: 'Welcome' }}
+          options={{ headerShown: true }}
         />
         {/* <Stack.Screen
           name="BottomNavigation"

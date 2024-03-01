@@ -17,13 +17,16 @@ const BottomTabs = () => {
         name="Home"
         component={FormScreen}
         options={{
-          headerShown: false,
+          headerShown: true,
+
+          headerTitleAlign: 'center',
+
+          headerTitle: 'Form',
           tabBarIcon: ({ color, size }) => (
             <Image
               source={Home}
               style={{
                 tintColor: color === '#009' ? 'blue' : '#b2b2b2',
-
                 width: 24,
                 height: 24,
                 borderRadius: 24,
@@ -40,7 +43,9 @@ const BottomTabs = () => {
         name="Driver History"
         component={RequestScreen}
         options={{
-          headerShown: false,
+          headerShown: true,
+          title: 'Driver History',
+          headerTitleAlign: 'center',
           tabBarIcon: ({ color, size }) => (
             <Image
               source={History}
