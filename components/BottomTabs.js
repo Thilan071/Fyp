@@ -9,6 +9,7 @@ import Home from '../assets/home.png';
 import History from '../assets/history-book.png';
 import Profile from '../assets/profile.png';
 import ProfileScreen from './ProfileScreen';
+import HistoryScreen from './HistoryScreen';
 const BottomTabs = () => {
   const Stack = createNativeStackNavigator();
   const Tab = createBottomTabNavigator();
@@ -42,7 +43,7 @@ const BottomTabs = () => {
       />
       <Tab.Screen
         name="Driver History"
-        component={RequestScreen}
+        component={HistoryScreen}
         options={{
           headerShown: true,
           title: 'Driver History',
