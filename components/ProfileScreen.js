@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
+import { storage } from '../firebase';
+import { ref, uploadBytes } from 'firebase/storage';
 
 const ProfileScreen = () => {
   const [username, setUsername] = useState('');
@@ -27,8 +29,23 @@ const ProfileScreen = () => {
     });
 
     // Check if image selection was cancelled
-    if (!result.cancelled) {
+    if (!result.canceled) {
       setProfilePicture(result.uri); // Update profile picture state with selected image URI
+    }
+  };
+
+  // Function to upload profile picture to Firebase storage
+  const handleUploadProfilePicture = async () => {
+    try {
+      const response = await fetch(profilePicture);
+      const blob = await response.blob();
+      const fileName = 'profile_picture.jpg';
+      const storageRef = ref(storage, fileName);
+      await uploadBytes(storageRef, blob);
+
+      console.log('Profile picture uploaded successfully!');
+    } catch (error) {
+      console.error('Error uploading profile picture:', error);
     }
   };
 
@@ -36,6 +53,9 @@ const ProfileScreen = () => {
   const handleSaveProfile = () => {
     // Implement logic to save profile data
     console.log('Profile saved:', { username, email, unit, profilePicture });
+    if (profilePicture) {
+      handleUploadProfilePicture();
+    }
   };
 
   return (
@@ -75,6 +95,11 @@ const ProfileScreen = () => {
       {/* Save profile button */}
       <TouchableOpacity style={styles.button} onPress={handleSaveProfile}>
         <Text style={styles.buttonText}>Edit Profile</Text>
+      </TouchableOpacity>
+
+      {/* Upload profile picture button */}
+      <TouchableOpacity style={styles.uploadButton} onPress={handleUploadProfilePicture}>
+        <Text style={styles.uploadButtonText}>Upload Profile Picture</Text>
       </TouchableOpacity>
     </View>
   );
@@ -139,6 +164,18 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  uploadButton: {
+    backgroundColor: '#27ae60',
+    paddingVertical: 12,
+    paddingHorizontal: 40,
+    borderRadius: 5,
+    marginTop: 20,
+  },
+  uploadButtonText: {
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',

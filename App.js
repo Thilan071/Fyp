@@ -15,7 +15,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {/* <Stack.Screen
+        <Stack.Screen
           name="LoginScreen"
           component={LoginScreen}
           options={{ headerShown: false }}
@@ -34,17 +34,17 @@ export default function App() {
           name="SignUpScreen"
           component={SignUpScreen}
           options={{ headerShown: true }}
-        /> */}
+        />
         <Stack.Screen
           name="CameraScreen"
           component={CameraScreen}
           options={{ title: 'Welcome' }}
         />
-         {/* <Stack.Screen
+         <Stack.Screen
           name="HistoryScreen"
           component={HistoryScreen}
           options={{ title: 'HistoryScreen' }}
-        /> */}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

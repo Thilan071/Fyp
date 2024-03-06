@@ -80,20 +80,16 @@ export default function CameraScreen() {
   return (
     <View style={styles.container}>
       <Camera style={styles.camera} type={type} ref={cameraRef}>
+        <TouchableOpacity style={styles.flipButton} onPress={toggleCameraType}>
+          <MaterialIcons name="flip" size={24} color="white" />
+        </TouchableOpacity>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={toggleCameraType}>
-            <Text style={styles.text}>Flip Camera</Text>
+          <TouchableOpacity style={styles.uploadButton} onPress={handleUpload}>
+            <Text style={styles.uploadButtonText}>Upload</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={takePicture}
-            style={{
-              width: 70,
-              height: 70,
-              borderRadius: 35,
-              backgroundColor: '#fff',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
+            style={[styles.takePictureButton, styles.centerButton]}
           >
             <View
               style={{
@@ -106,9 +102,6 @@ export default function CameraScreen() {
           </TouchableOpacity>
           <TouchableOpacity style={styles.sendButton} onPress={sendDetails}>
             <Text style={styles.sendButtonText}>Send Details</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.uploadButton} onPress={handleUpload}>
-            <Text style={styles.uploadButtonText}>Upload</Text>
           </TouchableOpacity>
         </View>
       </Camera>
@@ -146,10 +139,22 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 20,
   },
-  button: {
-    backgroundColor: '#2196F3',
-    borderRadius: 5,
-    padding: 10,
+  flipButton: {
+    position: 'absolute',
+    top: 20,
+    right: 20,
+    zIndex: 1,
+  },
+  centerButton: {
+    alignSelf: 'center',
+  },
+  takePictureButton: {
+    width: 70,
+    height: 70,
+    borderRadius: 35,
+    backgroundColor: '#fff',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   text: {
     fontSize: 18,
