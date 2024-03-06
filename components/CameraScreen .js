@@ -4,6 +4,8 @@ import { Button, StyleSheet, Text, TouchableOpacity, View, Image, Modal } from '
 import { useNavigation } from '@react-navigation/native';
 import { MaterialIcons } from '@expo/vector-icons';
 import * as MediaLibrary from 'expo-media-library';
+import { storage } from '../firebase';
+import { ref, uploadBytes } from 'firebase/storage';
 
 export default function CameraScreen() {
   const navigation = useNavigation();
@@ -13,7 +15,6 @@ export default function CameraScreen() {
   const [capturedImages, setCapturedImages] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
-  
 
   if (!permission) {
     return <View><Text>Requesting permissions...</Text></View>;
@@ -22,7 +23,7 @@ export default function CameraScreen() {
   if (!permission.granted) {
     return (
       <View style={styles.container}>
-        <Text style={{ textAlign: 'center' }}>We need  permission to show the camera.</Text>
+        <Text style={{ textAlign: 'center' }}>We need permission to show the camera.</Text>
         <Button onPress={requestPermission} title="Grant Permission" />
       </View>
     );
@@ -59,6 +60,23 @@ export default function CameraScreen() {
     setModalVisible(true);
   };
 
+  const handleUpload = async () => {
+    try {
+      const promises = capturedImages.map(async (imageUri, index) => {
+        const response = await fetch(imageUri);
+        const blob = await response.blob();
+        const fileName = `image_${index + 1}.jpg`;
+        const storageRef = ref(storage, `Images/${fileName}`);
+        await uploadBytes(storageRef, blob);
+      });
+
+      await Promise.all(promises);
+      console.log('All images uploaded successfully!');
+    } catch (error) {
+      console.error('Error uploading images:', error);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Camera style={styles.camera} type={type} ref={cameraRef}>
@@ -88,6 +106,9 @@ export default function CameraScreen() {
           </TouchableOpacity>
           <TouchableOpacity style={styles.sendButton} onPress={sendDetails}>
             <Text style={styles.sendButtonText}>Send Details</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.uploadButton} onPress={handleUpload}>
+            <Text style={styles.uploadButtonText}>Upload</Text>
           </TouchableOpacity>
         </View>
       </Camera>
@@ -140,6 +161,15 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   sendButtonText: {
+    fontSize: 18,
+    color: 'white',
+  },
+  uploadButton: {
+    backgroundColor: 'green',
+    borderRadius: 5,
+    padding: 10,
+  },
+  uploadButtonText: {
     fontSize: 18,
     color: 'white',
   },
