@@ -9,13 +9,14 @@ import SignUpScreen from '../Fyp/components/SignUpScreen';
 import CameraScreen from './components/CameraScreen ';
 import BottomTabs from './components/BottomTabs';
 import HistoryScreen from './components/HistoryScreen';
+import UpdatedForm from './components/UpdatedForm';
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen
+        {/* <Stack.Screen
           name="LoginScreen"
           component={LoginScreen}
           options={{ headerShown: false }}
@@ -44,6 +45,11 @@ export default function App() {
           name="HistoryScreen"
           component={HistoryScreen}
           options={{ title: 'HistoryScreen' }}
+        /> */}
+         <Stack.Screen
+          name="UpdatedForm"
+          component={UpdatedForm}
+          options={{ title: 'UpdatedForm' }}
         />
       </Stack.Navigator>
     </NavigationContainer>

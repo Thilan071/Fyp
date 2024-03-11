@@ -69,7 +69,7 @@ const FormScreen = ({ navigation }) => {
         driverContact: driverContact,
         witnessName: witnessName,
         witnessContact: witnessContact,
-        additionalComments: additionalComments,
+        additionalComments: additionalComments,t
       });
     } catch (error) {
       console.log('adding data firestore error', error);
