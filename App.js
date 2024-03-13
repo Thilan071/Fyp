@@ -16,7 +16,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {/* <Stack.Screen
+        <Stack.Screen
           name="LoginScreen"
           component={LoginScreen}
           options={{ headerShown: false }}
@@ -45,7 +45,7 @@ export default function App() {
           name="HistoryScreen"
           component={HistoryScreen}
           options={{ title: 'HistoryScreen' }}
-        /> */}
+        />
          <Stack.Screen
           name="UpdatedForm"
           component={UpdatedForm}

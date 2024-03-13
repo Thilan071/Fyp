@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
+import { TextInput, Button } from 'react-native-paper'; 
 
 const HistoryScreen = () => {
   const [nicNumber, setNicNumber] = useState('');
   const [history, setHistory] = useState([]);
 
   const fetchHistory = () => {
-    // Implement logic to fetch history based on NIC number
-    // For demonstration, let's assume history is fetched from an API
-    // Replace 'YOUR_API_ENDPOINT' with your actual API endpoint
+ 
     fetch(`YOUR_API_ENDPOINT?nic=${nicNumber}`)
       .then(response => response.json())
       .then(data => setHistory(data))
@@ -19,12 +18,15 @@ const HistoryScreen = () => {
     <View style={styles.container}>
       <Text style={styles.title}>History Screen</Text>
       <TextInput
-        style={styles.input}
-        placeholder="Enter NIC Number"
+        mode="outlined" 
+        label="Enter NIC Number" 
         value={nicNumber}
         onChangeText={text => setNicNumber(text)}
+        style={styles.input} 
       />
-      <Button title="Fetch History" onPress={fetchHistory} />
+      <Button mode="contained" onPress={fetchHistory} style={styles.button}>
+        Fetch History
+      </Button>
       <View style={styles.historyContainer}>
         {history.map((item, index) => (
           <Text key={index} style={styles.historyItem}>{item}</Text>
@@ -39,20 +41,22 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    padding: 20, 
   },
   title: {
     fontSize: 24,
     marginBottom: 20,
   },
   input: {
-    width: '80%',
-    borderWidth: 1,
-    borderColor: '#ccc',
-    padding: 10,
+    width: '100%', 
     marginBottom: 10,
+  },
+  button: {
+    marginTop: 10, 
   },
   historyContainer: {
     marginTop: 20,
+    width: '100%', 
   },
   historyItem: {
     fontSize: 16,

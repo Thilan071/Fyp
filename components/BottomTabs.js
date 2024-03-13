@@ -10,6 +10,7 @@ import History from '../assets/history-book.png';
 import Profile from '../assets/profile.png';
 import ProfileScreen from './ProfileScreen';
 import HistoryScreen from './HistoryScreen';
+import UpdatedForm from './UpdatedForm';
 const BottomTabs = () => {
   const Stack = createNativeStackNavigator();
   const Tab = createBottomTabNavigator();
@@ -17,7 +18,7 @@ const BottomTabs = () => {
     <Tab.Navigator>
       <Tab.Screen
         name="Home"
-        component={FormScreen}
+        component={UpdatedForm}
         options={{
           headerShown: true,
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -8,12 +8,13 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { TextInput, Card } from 'react-native-paper';
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, setDoc,collection, getDocs,getDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import { Picker } from '@react-native-picker/picker';
 
 
-const FormScreen = ({ navigation }) => {
+
+const UpdatedForm = ({ navigation }) => {
   const [formSection, setFormSection] = useState(1);
   const [caseDate, setCaseDate] = useState('');
   const [caseTime, setCaseTime] = useState('');
@@ -40,7 +41,30 @@ const FormScreen = ({ navigation }) => {
   const [penaltyDescription, setPenaltyDescription] = useState('');
   const [penaltyCost, setPenaltyCost] = useState('');
   
+  const [penalties, setPenalties] = useState([]); 
+const [selectedPenalty, setSelectedPenalty] = useState({}); 
 
+
+  useEffect(() => {
+    const getPenalties = async () => {
+      const penaltiesColRef = collection(db, 'penalties');
+      try {
+        const penaltiesSnapshot = await getDocs(penaltiesColRef);
+        const penaltiesList = penaltiesSnapshot.docs.map(doc => ({
+          id: doc.id, 
+          ...doc.data()
+        }));
+        setPenalties(penaltiesList);
+      } catch (error) {
+        console.error("Error fetching penalties: ", error);
+      }
+    };
+
+    getPenalties();
+}, []);
+
+console.log("checking database",penalties);
+  
   const handleSubmit = () => {
     console.log('Form submitted:', {
         caseDate,
@@ -75,7 +99,7 @@ const FormScreen = ({ navigation }) => {
     console.log('Val', values);
 
     try {
-      await setDoc(doc(db, 'DRIVER DETAILS', driverLicenseNumber), {
+      await setDoc(doc(db, 'DRIVER DETAILS', licenseNumber), {
         caseDate: caseDate,
         caseTime: caseTime,
         caseLocation: caseLocation,
@@ -107,8 +131,8 @@ const FormScreen = ({ navigation }) => {
   };
   const getExpireDate = () => {
     const today = new Date();
-    today.setDate(today.getDate() + 14); // Adding 14 days
-    const formattedExpireDate = today.toISOString().split('T')[0]; // Get YYYY-MM-DD format
+    today.setDate(today.getDate() + 14); 
+    const formattedExpireDate = today.toISOString().split('T')[0]; 
     return formattedExpireDate;
   };
 
@@ -117,6 +141,18 @@ const FormScreen = ({ navigation }) => {
     const truncatedValue = numericValue.slice(0, 10);
     setMobileNumber(truncatedValue);
   };
+
+  const fetchPenalties = async () => {
+    const penaltiesCol = collection(db, 'penalties');
+    const penaltySnapshot = await getDocs(penaltiesCol);
+    const penaltyList = penaltySnapshot.docs.map(doc => ({
+        id: doc.id, 
+        penaltyCost: doc.data().penalty_cost,
+        penaltyDescription: doc.data().penalty_description,
+    }));
+    return penaltyList;
+};
+
 
   return (
     <View style={styles.container}>
@@ -403,224 +439,57 @@ const FormScreen = ({ navigation }) => {
       <Text style={[styles.cardTitle, { marginTop: 5 }]}>
         Vehicle Information
       </Text>
+<View>
+  <Text style={styles.mainTitle}>Penalty</Text>
 
-      <View style={styles.textsAndInputs}>
-        <Text style={styles.mainTitle}>Vehicle Type</Text>
+<Picker
+    selectedValue={selectedPenalty.id}
+    onValueChange={(itemValue) => {
+        const penalty = penalties.find(p => p.id === itemValue);
+        setSelectedPenalty(penalty || {});
+        setPenaltyDescription(penalty?.penaltyDescription ?? '');
+        setPenaltyCost(penalty?.penaltyCost?.toString() ?? '');
+    }}
+    style={styles.input}>
+    {penalties.map((penalty) => (
+        <Picker.Item key={penalty.id} label={penalty.penaltyDescription} value={penalty.id} />
+    ))}
+</Picker>
 
-        <TextInput
-          placeholder="SUV"
-          placeholderTextColor="#C7D0D9"
-          value={vehicleType}
-          onChangeText={setVehicleType}
-          style={styles.input}
-          underlineColor="white"
-        />
-      </View>
 
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                <View style={{ flex: 3, marginRight: 8 }}>
-                    <Text style={styles.mainTitle}>Penalty Description</Text>
-                    <TextInput
-                    placeholder="Description"
-                    placeholderTextColor="#C7D0D9"
-                    value={penaltyDescription}
-                    onChangeText={setPenaltyDescription}
-                    style={[styles.input, { height: 40 }]} // Adjust as needed
-                    underlineColorAndroid="transparent"
-                    multiline={true}
-                    />
-                </View>
+</View>
 
-                <View style={{ flex: 1, justifyContent: 'flex-end' }}>
-                    <Text style={styles.mainTitle}>Cost</Text>
-                    <TextInput
-                    placeholder="Cost"
-                    placeholderTextColor="#C7D0D9"
-                    value={penaltyCost}
-                    onChangeText={setPenaltyCost}
-                    style={[styles.input, { height: 40 }]} // Ensure consistent height with description input
-                    underlineColorAndroid="transparent"
-                    keyboardType="numeric"
-                    />
-                </View>
-                </View>
+<View>
+  <Text style={styles.mainTitle}>Vehicle Type</Text>
+  <TextInput
+    placeholder="Vehicle Type"
+    value={vehicleType}
+    onChangeText={setVehicleType}
+    style={styles.input}
+    underlineColor="white"
+  />
+</View>
+
+<TextInput
+    placeholder="Penalty Description"
+    placeholderTextColor="#C7D0D9"
+    value={penaltyDescription}
+    onChangeText={setPenaltyDescription}
+    style={styles.input}
+    underlineColor="white"
+/>
+
+<TextInput
+    placeholder="Penalty Cost"
+    placeholderTextColor="#C7D0D9"
+    value={penaltyCost}
+    onChangeText={setPenaltyCost}
+    style={styles.input}
+    underlineColor="white"
+    keyboardType="numeric"
+/>
 
                     </ScrollView>
-
-                
-
-                
-
-                
-
-                
-
-
-
-
-                
-
-
-                {/* <View>
-                  <Text style={styles.mainTitle}>Color</Text>
-                  <TextInput
-                    placeholder="Blue"
-                    placeholderTextColor="#C7D0D9"
-                    value={color}
-                    onChangeText={setColor}
-                    style={styles.input}
-                    underlineColor="white"
-                  />
-                </View>
-
-                <Text style={[styles.cardTitle, { marginTop: 20 }]}>
-                  Incident Details
-                </Text>
-                <View>
-                  <Text style={styles.mainTitle}>Date</Text>
-                  <TextInput
-                    placeholder="YYYY-MM-DD"
-                    placeholderTextColor="#C7D0D9"
-                    value={incidentDate}
-                    onChangeText={setIncidentDate}
-                    style={styles.input}
-                    underlineColor="white"
-                  />
-                </View>
-
-                <View>
-                  <Text style={styles.mainTitle}>Time</Text>
-                  <TextInput
-                    placeholder="HH:MM AM/PM"
-                    placeholderTextColor="#C7D0D9"
-                    value={incidentTime}
-                    onChangeText={setIncidentTime}
-                    style={styles.input}
-                    underlineColor="white"
-                  />
-                </View>
-
-                <View>
-                  <Text style={styles.mainTitle}>Location</Text>
-                  <TextInput
-                    placeholder="Street address, City"
-                    placeholderTextColor="#C7D0D9"
-                    value={incidentLocation}
-                    onChangeText={setIncidentLocation}
-                    style={styles.input}
-                    underlineColor="white"
-                  />
-                </View>
-                <View>
-                  <Text style={styles.mainTitle}>Violation Description </Text>
-                  <TextInput
-                    placeholder="Speeding"
-                    placeholderTextColor="#C7D0D9"
-                    value={violationDescription}
-                    onChangeText={setViolationDescription}
-                    style={styles.input}
-                    underlineColor="white"
-                    multiline
-                  />
-                </View>
-
-                <View>
-                  <TouchableOpacity
-                    onPress={() => setFormSection(2)}
-                    style={styles.button}
-                  >
-                    <Text style={styles.text}> Next </Text>
-                  </TouchableOpacity>
-                </View>
-              </ScrollView>
-            </Card>
-          </View>
-        </>
-      )}
-
-      {formSection === 2 && (
-        <>
-          <View style={{ marginBottom: 10 }}>
-            <Card style={styles.card}>
-              <ScrollView>
-                <Text style={styles.cardTitle}>Driver Information:</Text>
-                <View>
-                  <Text style={styles.mainTitle}>Driver's Name</Text>
-                  <TextInput
-                    placeholder="Thilan"
-                    placeholderTextColor="#C7D0D9"
-                    value={driverName}
-                    onChangeText={setDriverName}
-                    style={styles.input}
-                    underlineColor="white"
-                  />
-                </View>
-
-                <View>
-                  <Text style={styles.mainTitle}> Driver's License Number</Text>
-                  <TextInput
-                    placeholder="200120702665"
-                    placeholderTextColor="#C7D0D9"
-                    value={driverLicenseNumber}
-                    onChangeText={setDriverLicenseNumber}
-                    style={styles.input}
-                    underlineColor="white"
-                  />
-                </View>
-
-                <View>
-                  <Text style={styles.mainTitle}>Driver's Contact</Text>
-                  <TextInput
-                    placeholder="0714074987"
-                    placeholderTextColor="#C7D0D9"
-                    value={driverContact}
-                    onChangeText={setDriverContact}
-                    style={styles.input}
-                    underlineColor="white"
-                  />
-                </View>
-
-                <Text style={[styles.cardTitle, { marginTop: 20 }]}>
-                  Witness Information:
-                </Text>
-
-                <View>
-                  <Text style={styles.mainTitle}> Witness Name</Text>
-                  <TextInput
-                    placeholder="Lasith Herath"
-                    placeholderTextColor="#C7D0D9"
-                    value={witnessName}
-                    onChangeText={setWitnessName}
-                    style={styles.input}
-                    underlineColor="white"
-                  />
-                </View>
-
-                <View>
-                  <Text style={styles.mainTitle}>Witness Contact </Text>
-                  <TextInput
-                    placeholder="0789833773"
-                    placeholderTextColor="#C7D0D9"
-                    value={witnessContact}
-                    onChangeText={setWitnessContact}
-                    style={styles.input}
-                    underlineColor="white"
-                  />
-                </View>
-
-                <View>
-                  <Text style={styles.mainTitle}>Additional Comments</Text>
-                  <TextInput
-                    placeholder="Comment....."
-                    placeholderTextColor="#C7D0D9"
-                    value={additionalComments}
-                    onChangeText={setAdditionalComments}
-                    style={styles.input}
-                    multiline
-                    numberOfLines={4}
-                    underlineColor="white"
-                  />
-                </View> */}
 
                 <View>
                   <TouchableOpacity
@@ -646,7 +515,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#2352D8',
     paddingVertical: 10,
     paddingHorizontal: 20,
-    borderRadius: 8, // Adjust the value to change the degree of rounding
+    borderRadius: 8, 
   },
   text: {
     color: '#ffffff',
@@ -695,4 +564,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default FormScreen;
+export default UpdatedForm;

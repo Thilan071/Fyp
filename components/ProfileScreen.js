@@ -11,16 +11,13 @@ const ProfileScreen = () => {
   const [unit, setUnit] = useState('');
   const [profilePicture, setProfilePicture] = useState(null);
 
-  // Function to handle profile picture change
   const handleChangeProfilePicture = async () => {
-    // Request permission to access the gallery
     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (permissionResult.granted === false) {
       alert('Permission to access camera roll is required!');
       return;
     }
 
-    // Launch image picker
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
@@ -28,13 +25,11 @@ const ProfileScreen = () => {
       quality: 1,
     });
 
-    // Check if image selection was cancelled
     if (!result.canceled) {
-      setProfilePicture(result.uri); // Update profile picture state with selected image URI
+      setProfilePicture(result.uri);
     }
   };
 
-  // Function to upload profile picture to Firebase storage
   const handleUploadProfilePicture = async () => {
     try {
       const response = await fetch(profilePicture);
@@ -49,9 +44,7 @@ const ProfileScreen = () => {
     }
   };
 
-  // Function to save profile
   const handleSaveProfile = () => {
-    // Implement logic to save profile data
     console.log('Profile saved:', { username, email, unit, profilePicture });
     if (profilePicture) {
       handleUploadProfilePicture();
@@ -92,12 +85,10 @@ const ProfileScreen = () => {
         value={unit}
         onChangeText={setUnit}
       />
-      {/* Save profile button */}
       <TouchableOpacity style={styles.button} onPress={handleSaveProfile}>
         <Text style={styles.buttonText}>Edit Profile</Text>
       </TouchableOpacity>
 
-      {/* Upload profile picture button */}
       <TouchableOpacity style={styles.uploadButton} onPress={handleUploadProfilePicture}>
         <Text style={styles.uploadButtonText}>Upload Profile Picture</Text>
       </TouchableOpacity>
@@ -105,7 +96,7 @@ const ProfileScreen = () => {
   );
 };
 
-// Styles
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
