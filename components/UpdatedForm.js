@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -8,11 +8,10 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { TextInput, Card } from 'react-native-paper';
-import { doc, setDoc,collection, getDocs,getDoc } from 'firebase/firestore';
+import { doc, setDoc, collection, getDocs, getDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import { Picker } from '@react-native-picker/picker';
-
-
+import { SelectList } from 'react-native-dropdown-select-list';
 
 const UpdatedForm = ({ navigation }) => {
   const [formSection, setFormSection] = useState(1);
@@ -40,57 +39,89 @@ const UpdatedForm = ({ navigation }) => {
   const [vehicleType, setVehicleType] = useState('');
   const [penaltyDescription, setPenaltyDescription] = useState('');
   const [penaltyCost, setPenaltyCost] = useState('');
-  
-  const [penalties, setPenalties] = useState([]); 
-const [selectedPenalty, setSelectedPenalty] = useState({}); 
 
+  const [penalties, setPenalties] = useState([]);
+  const [selectedPenalty, setSelectedPenalty] = useState({});
+  const [selectedOpenClose, setSelectedOpenCLose] = React.useState('');
+
+  const data = [
+    { key: '1', value: 'Unpaid' },
+    { key: '2', value: 'Paid' },
+  ];
+
+  const dataForOpenClose = [
+    { key: '1', value: 'Open' },
+    { key: '2', value: 'Closed' },
+  ];
+  const dataVehicleType = [
+    { key: '1', value: 'Sedan' },
+    { key: '2', value: 'Hatchback' },
+    { key: '3', value: 'SUV' },
+    { key: '4', value: 'Crossover' },
+    { key: '5', value: 'Coupe' },
+    { key: '6', value: 'Convertible' },
+    { key: '7', value: 'Wagon' },
+    { key: '8', value: 'Minivan' },
+    { key: '9', value: 'Pickup Truck' },
+    { key: '10', value: 'Van' },
+    { key: '11', value: 'Compact Car' },
+    { key: '12', value: 'Mid-Size Car' },
+    { key: '13', value: 'Full-Size Car' },
+    { key: '14', value: 'Sports Car' },
+    { key: '15', value: 'Luxury Car' },
+    { key: '16', value: 'Electric Vehicle' },
+    { key: '17', value: 'Hybrid Vehicle' },
+    { key: '18', value: 'Commercial Vehicle' },
+    { key: '19', value: 'Motorcycle' },
+    { key: '20', value: 'Bicycle' }
+  ];
 
   useEffect(() => {
     const getPenalties = async () => {
       const penaltiesColRef = collection(db, 'penalties');
       try {
         const penaltiesSnapshot = await getDocs(penaltiesColRef);
-        const penaltiesList = penaltiesSnapshot.docs.map(doc => ({
-          id: doc.id, 
-          ...doc.data()
+        const penaltiesList = penaltiesSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
         }));
         setPenalties(penaltiesList);
       } catch (error) {
-        console.error("Error fetching penalties: ", error);
+        console.error('Error fetching penalties: ', error);
       }
     };
 
     getPenalties();
-}, []);
+  }, []);
 
-console.log("checking database",penalties);
-  
+  console.log('checking database', penalties);
+
   const handleSubmit = () => {
     console.log('Form submitted:', {
-        caseDate,
-        caseTime,
-        caseLocation,
-        caseDirection,
-        caseExpireDate,
-        caseStatus,
-        trafficOicNumber,
-        caseDescription,
-        penaltyPayment,
-        penaltyId,
-        driverId,
-        paymentDate,
-        paymentStatus,
-        vehicleNumber,
-        vehicleTypeId,
-        nic,
-        firstName,
-        lastName,
-        address,
-        mobileNumber,
-        licenseNumber,
-        vehicleType,
-        penaltyDescription,
-        penaltyCost
+      caseDate,
+      caseTime,
+      caseLocation,
+      caseDirection,
+      caseExpireDate,
+      caseStatus,
+      trafficOicNumber,
+      caseDescription,
+      penaltyPayment,
+      penaltyId,
+      driverId,
+      paymentDate,
+      paymentStatus,
+      vehicleNumber,
+      vehicleTypeId,
+      nic,
+      firstName,
+      lastName,
+      address,
+      mobileNumber,
+      licenseNumber,
+      vehicleType,
+      penaltyDescription,
+      penaltyCost,
     });
 
     navigation.navigate('CameraScreen');
@@ -123,7 +154,7 @@ console.log("checking database",penalties);
         licenseNumber: licenseNumber,
         vehicleType: vehicleType,
         penaltyDescription: penaltyDescription,
-        penaltyCost: penaltyCost
+        penaltyCost: penaltyCost,
       });
     } catch (error) {
       console.log('adding data firestore error', error);
@@ -131,8 +162,8 @@ console.log("checking database",penalties);
   };
   const getExpireDate = () => {
     const today = new Date();
-    today.setDate(today.getDate() + 14); 
-    const formattedExpireDate = today.toISOString().split('T')[0]; 
+    today.setDate(today.getDate() + 14);
+    const formattedExpireDate = today.toISOString().split('T')[0];
     return formattedExpireDate;
   };
 
@@ -145,14 +176,13 @@ console.log("checking database",penalties);
   const fetchPenalties = async () => {
     const penaltiesCol = collection(db, 'penalties');
     const penaltySnapshot = await getDocs(penaltiesCol);
-    const penaltyList = penaltySnapshot.docs.map(doc => ({
-        id: doc.id, 
-        penaltyCost: doc.data().penalty_cost,
-        penaltyDescription: doc.data().penalty_description,
+    const penaltyList = penaltySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      penaltyCost: doc.data().penalty_cost,
+      penaltyDescription: doc.data().penalty_description,
     }));
     return penaltyList;
-};
-
+  };
 
   return (
     <View style={styles.container}>
@@ -181,7 +211,7 @@ console.log("checking database",penalties);
                 <View>
                   <Text style={styles.mainTitle}>Case Time</Text>
                   <TextInput
-                    placeholder="HH:MM AM/PM"                    
+                    placeholder="HH:MM AM/PM"
                     placeholderTextColor="#C7D0D9"
                     value={caseTime}
                     onChangeText={setCaseTime}
@@ -214,22 +244,20 @@ console.log("checking database",penalties);
                   />
                 </View>
                 <View>
-                <Text style={styles.mainTitle}>Case Expire Date</Text>
-                <Text style={styles.input}>
-                    Must you have to pay within fourteen days from today: {getExpireDate()}
-                </Text>
+                  <Text style={styles.mainTitle}>Case Expire Date</Text>
+                  <Text style={styles.input}>
+                    Must you have to pay within fourteen days from today:{' '}
+                    {getExpireDate()}
+                  </Text>
                 </View>
 
                 <View>
-                <Text style={styles.mainTitle}>Case Status</Text>
-                <Picker
-                    selectedValue={caseStatus}
-                    onValueChange={(itemValue, itemIndex) => setCaseStatus(itemValue)}
-                    style={styles.input}
-                >
-                    <Picker.Item label="Open" value="Open" />
-                    <Picker.Item label="Closed" value="Closed" />
-                </Picker>
+                  <Text style={styles.mainTitle}>Case Status</Text>
+                  <SelectList
+                    setSelected={(val) => setCaseStatus(val)}
+                    data={dataForOpenClose}
+                    save="value"
+                  />
                 </View>
 
                 <View>
@@ -256,7 +284,7 @@ console.log("checking database",penalties);
                     underlineColor="white"
                   />
                 </View>
-                
+
                 <View>
                   <Text style={styles.mainTitle}>Penalty Payment</Text>
                   <TextInput
@@ -268,7 +296,7 @@ console.log("checking database",penalties);
                     underlineColor="white"
                   />
                 </View>
-                
+
                 <View>
                   <Text style={styles.mainTitle}>Penalty ID</Text>
                   <TextInput
@@ -280,7 +308,7 @@ console.log("checking database",penalties);
                     underlineColor="white"
                   />
                 </View>
-                
+
                 <View>
                   <Text style={styles.mainTitle}>Driver ID</Text>
                   <TextInput
@@ -306,15 +334,12 @@ console.log("checking database",penalties);
                 </View>
 
                 <View>
-                <Text style={styles.mainTitle}>Payment Status</Text>
-                <Picker
-                    selectedValue={paymentStatus}
-                    onValueChange={(itemValue) => setCaseStatus(itemValue)}
-                    style={styles.input}
-                >
-                    <Picker.Item label="Paid" value="Paid" />
-                    <Picker.Item label="Un-pPaid" value="Un-pPaid" />
-                </Picker>
+                  <Text style={styles.mainTitle}>Payment Status</Text>
+                  <SelectList
+                    setSelected={(val) => setPaymentStatus(val)}
+                    data={data}
+                    save="value"
+                  />
                 </View>
 
                 <View>
@@ -377,7 +402,7 @@ console.log("checking database",penalties);
                   <Text style={styles.mainTitle}>Last Name</Text>
                   <TextInput
                     placeholder="Theekshana"
-                    placeholderTextColor="#C7D0D9" 
+                    placeholderTextColor="#C7D0D9"
                     value={lastName}
                     onChangeText={setLastName}
                     style={styles.input}
@@ -389,7 +414,7 @@ console.log("checking database",penalties);
                   <Text style={styles.mainTitle}>NIC</Text>
                   <TextInput
                     placeholder="20010450350v"
-                    placeholderTextColor="#C7D0D9" 
+                    placeholderTextColor="#C7D0D9"
                     value={nic}
                     onChangeText={setNic}
                     style={styles.input}
@@ -401,7 +426,7 @@ console.log("checking database",penalties);
                   <Text style={styles.mainTitle}>Address</Text>
                   <TextInput
                     placeholder="Kandy , Sri Lanka"
-                    placeholderTextColor="#C7D0D9" 
+                    placeholderTextColor="#C7D0D9"
                     value={address}
                     onChangeText={setAddress}
                     style={styles.input}
@@ -410,24 +435,24 @@ console.log("checking database",penalties);
                 </View>
 
                 <View>
-                <Text style={styles.mainTitle}>Mobile Number</Text>
-                <TextInput
+                  <Text style={styles.mainTitle}>Mobile Number</Text>
+                  <TextInput
                     placeholder="078-3498097"
-                    placeholderTextColor="#C7D0D9" 
+                    placeholderTextColor="#C7D0D9"
                     value={mobileNumber}
                     onChangeText={handleMobileNumberChange}
                     style={styles.input}
-                    underlineColorAndroid="transparent" 
+                    underlineColorAndroid="transparent"
                     keyboardType="numeric"
-                    maxLength={10} 
-                />
+                    maxLength={10}
+                  />
                 </View>
 
                 <View>
                   <Text style={styles.mainTitle}>License Number</Text>
                   <TextInput
                     placeholder="3456789"
-                    placeholderTextColor="#C7D0D9" 
+                    placeholderTextColor="#C7D0D9"
                     value={licenseNumber}
                     onChangeText={setLicenseNumber}
                     style={styles.input}
@@ -436,60 +461,64 @@ console.log("checking database",penalties);
                 </View>
 
                 <ScrollView>
-      <Text style={[styles.cardTitle, { marginTop: 5 }]}>
-        Vehicle Information
-      </Text>
-<View>
-  <Text style={styles.mainTitle}>Penalty</Text>
+                  <Text style={[styles.cardTitle, { marginTop: 5 }]}>
+                    Vehicle Information
+                  </Text>
+                  <View>
+                    <Text style={styles.mainTitle}>Penalty</Text>
 
-<Picker
-    selectedValue={selectedPenalty.id}
-    onValueChange={(itemValue) => {
-        const penalty = penalties.find(p => p.id === itemValue);
-        setSelectedPenalty(penalty || {});
-        setPenaltyDescription(penalty?.penaltyDescription ?? '');
-        setPenaltyCost(penalty?.penaltyCost?.toString() ?? '');
-    }}
-    style={styles.input}>
-    {penalties.map((penalty) => (
-        <Picker.Item key={penalty.id} label={penalty.penaltyDescription} value={penalty.id} />
-    ))}
-</Picker>
+                    <Picker
+                      selectedValue={selectedPenalty.id}
+                      onValueChange={(itemValue) => {
+                        const penalty = penalties.find(
+                          (p) => p.id === itemValue,
+                        );
+                        setSelectedPenalty(penalty || {});
+                        setPenaltyDescription(
+                          penalty?.penaltyDescription ?? '',
+                        );
+                        setPenaltyCost(penalty?.penaltyCost?.toString() ?? '');
+                      }}
+                      style={styles.input}
+                    >
+                      {penalties.map((penalty) => (
+                        <Picker.Item
+                          key={penalty.id}
+                          label={penalty.penaltyDescription}
+                          value={penalty.id}
+                        />
+                      ))}
+                    </Picker>
+                  </View>
 
+                  <View>
+                    <Text style={styles.mainTitle}>Vehicle Type</Text>
+                   <SelectList
+                    setSelected={(val) => setVehicleType(val)}
+                    data={dataVehicleType}
+                    save="value"
+                  />
+                  </View>
 
-</View>
+                  <TextInput
+                    placeholder="Penalty Description"
+                    placeholderTextColor="#C7D0D9"
+                    value={penaltyDescription}
+                    onChangeText={setPenaltyDescription}
+                    style={styles.input}
+                    underlineColor="white"
+                  />
 
-<View>
-  <Text style={styles.mainTitle}>Vehicle Type</Text>
-  <TextInput
-    placeholder="Vehicle Type"
-    value={vehicleType}
-    onChangeText={setVehicleType}
-    style={styles.input}
-    underlineColor="white"
-  />
-</View>
-
-<TextInput
-    placeholder="Penalty Description"
-    placeholderTextColor="#C7D0D9"
-    value={penaltyDescription}
-    onChangeText={setPenaltyDescription}
-    style={styles.input}
-    underlineColor="white"
-/>
-
-<TextInput
-    placeholder="Penalty Cost"
-    placeholderTextColor="#C7D0D9"
-    value={penaltyCost}
-    onChangeText={setPenaltyCost}
-    style={styles.input}
-    underlineColor="white"
-    keyboardType="numeric"
-/>
-
-                    </ScrollView>
+                  <TextInput
+                    placeholder="Penalty Cost"
+                    placeholderTextColor="#C7D0D9"
+                    value={penaltyCost}
+                    onChangeText={setPenaltyCost}
+                    style={styles.input}
+                    underlineColor="white"
+                    keyboardType="numeric"
+                  />
+                </ScrollView>
 
                 <View>
                   <TouchableOpacity
@@ -515,7 +544,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#2352D8',
     paddingVertical: 10,
     paddingHorizontal: 20,
-    borderRadius: 8, 
+    borderRadius: 8,
   },
   text: {
     color: '#ffffff',
