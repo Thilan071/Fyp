@@ -482,6 +482,8 @@ const UpdatedForm = ({ navigation }) => {
 
                   <SelectList 
         setSelected={(val) => setSelected(val)} 
+        placeholder="Penalty Description"
+
         data={data} 
         save="value"
     />
