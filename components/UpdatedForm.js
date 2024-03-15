@@ -12,6 +12,8 @@ import { doc, setDoc, collection, getDocs, getDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import { Picker } from '@react-native-picker/picker';
 import { SelectList } from 'react-native-dropdown-select-list';
+import { MultipleSelectList } from 'react-native-dropdown-select-list'
+
 
 const UpdatedForm = ({ navigation }) => {
   const [formSection, setFormSection] = useState(1);
@@ -53,29 +55,7 @@ const UpdatedForm = ({ navigation }) => {
     { key: '1', value: 'Open' },
     { key: '2', value: 'Closed' },
   ];
-  const dataVehicleType = [
-    { key: '1', value: 'Sedan' },
-    { key: '2', value: 'Hatchback' },
-    { key: '3', value: 'SUV' },
-    { key: '4', value: 'Crossover' },
-    { key: '5', value: 'Coupe' },
-    { key: '6', value: 'Convertible' },
-    { key: '7', value: 'Wagon' },
-    { key: '8', value: 'Minivan' },
-    { key: '9', value: 'Pickup Truck' },
-    { key: '10', value: 'Van' },
-    { key: '11', value: 'Compact Car' },
-    { key: '12', value: 'Mid-Size Car' },
-    { key: '13', value: 'Full-Size Car' },
-    { key: '14', value: 'Sports Car' },
-    { key: '15', value: 'Luxury Car' },
-    { key: '16', value: 'Electric Vehicle' },
-    { key: '17', value: 'Hybrid Vehicle' },
-    { key: '18', value: 'Commercial Vehicle' },
-    { key: '19', value: 'Motorcycle' },
-    { key: '20', value: 'Bicycle' }
-  ];
-
+  
   useEffect(() => {
     const getPenalties = async () => {
       const penaltiesColRef = collection(db, 'penalties');
@@ -495,19 +475,16 @@ const UpdatedForm = ({ navigation }) => {
                     <Text style={styles.mainTitle}>Vehicle Type</Text>
                    <SelectList
                     setSelected={(val) => setVehicleType(val)}
-                    data={dataVehicleType}
+                    // data={dataVehicleType}
                     save="value"
                   />
                   </View>
 
-                  <TextInput
-                    placeholder="Penalty Description"
-                    placeholderTextColor="#C7D0D9"
-                    value={penaltyDescription}
-                    onChangeText={setPenaltyDescription}
-                    style={styles.input}
-                    underlineColor="white"
-                  />
+                  <SelectList 
+        setSelected={(val) => setSelected(val)} 
+        data={data} 
+        save="value"
+    />
 
                   <TextInput
                     placeholder="Penalty Cost"
