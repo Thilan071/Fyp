@@ -12,7 +12,6 @@ import { doc, setDoc, collection, getDocs, getDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import { Picker } from '@react-native-picker/picker';
 import { SelectList } from 'react-native-dropdown-select-list';
-import { MultipleSelectList } from 'react-native-dropdown-select-list'
 
 
 const UpdatedForm = ({ navigation }) => {
@@ -41,8 +40,11 @@ const UpdatedForm = ({ navigation }) => {
   const [vehicleType, setVehicleType] = useState('');
   const [penaltyDescription, setPenaltyDescription] = useState('');
   const [penaltyCost, setPenaltyCost] = useState('');
-
+  const [showVehicleList, setShowVehicleList] = useState(false);
+  const [vehicles, setVehicles] = useState('');
+  const [selectedVehicle, setSelectedVehicle] = useState('');
   const [penalties, setPenalties] = useState([]);
+  const [showPenaltyList, setShowPenaltyList] = useState(false);
   const [selectedPenalty, setSelectedPenalty] = useState({});
   const [selectedOpenClose, setSelectedOpenCLose] = React.useState('');
 
@@ -74,6 +76,24 @@ const UpdatedForm = ({ navigation }) => {
     getPenalties();
   }, []);
 
+  useEffect(() => {
+    const getVehicles = async () => {
+      const vehiclesColRef = collection(db, 'vehicles');
+      try {
+        const vehiclesSnapshot = await getDocs(vehiclesColRef);
+        const vehiclesList = vehiclesSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setVehicles(vehiclesList);
+      } catch (error) {
+        console.error('Error fetching vehicles: ', error);
+      }
+    };
+  
+    getVehicles();
+  }, []);
+  
   console.log('checking database', penalties);
 
   const handleSubmit = () => {
@@ -164,6 +184,24 @@ const UpdatedForm = ({ navigation }) => {
     return penaltyList;
   };
 
+  const handleVehicleChange = (value) => {
+    setSelectedVehicle(value);
+    console.log(selectedVehicle)
+    setShowVehicleList(false);
+  };
+
+  const handlePenaltyChange = (value) => {
+    console.log("Selected penalty value:", value);
+    const selectedPenalty = penalties.find(penalty => penalty.penaltyTitle === value);
+    console.log("Selected penalty:", selectedPenalty);
+    setSelectedPenalty(selectedPenalty);
+    setPenaltyDescription(selectedPenalty?.penaltyDescription ?? '');
+    setPenaltyCost(selectedPenalty?.penaltyCost?.toString() ?? '');
+    setSelectedPenalty(value);
+    console.log(selectedVehicle)
+    setShowPenaltyList(false);
+  };
+  
   return (
     <View style={styles.container}>
       {formSection === 1 && (
@@ -226,7 +264,7 @@ const UpdatedForm = ({ navigation }) => {
                 <View>
                   <Text style={styles.mainTitle}>Case Expire Date</Text>
                   <Text style={styles.input}>
-                    Must you have to pay within fourteen days from today:{' '}
+                    {' '}
                     {getExpireDate()}
                   </Text>
                 </View>
@@ -444,48 +482,67 @@ const UpdatedForm = ({ navigation }) => {
                   <Text style={[styles.cardTitle, { marginTop: 5 }]}>
                     Vehicle Information
                   </Text>
+                  
                   <View>
-                    <Text style={styles.mainTitle}>Penalty</Text>
-
-                    <Picker
-                      selectedValue={selectedPenalty.id}
-                      onValueChange={(itemValue) => {
-                        const penalty = penalties.find(
-                          (p) => p.id === itemValue,
-                        );
-                        setSelectedPenalty(penalty || {});
-                        setPenaltyDescription(
-                          penalty?.penaltyDescription ?? '',
-                        );
-                        setPenaltyCost(penalty?.penaltyCost?.toString() ?? '');
-                      }}
-                      style={styles.input}
-                    >
-                      {penalties.map((penalty) => (
-                        <Picker.Item
-                          key={penalty.id}
-                          label={penalty.penaltyDescription}
-                          value={penalty.id}
-                        />
-                      ))}
-                    </Picker>
-                  </View>
-
-                  <View>
-                    <Text style={styles.mainTitle}>Vehicle Type</Text>
-                   <SelectList
-                    setSelected={(val) => setVehicleType(val)}
-                    // data={dataVehicleType}
-                    save="value"
+                  <Text style={styles.mainTitle}>Select Penalty</Text>
+                  <TextInput
+                    style={styles.input}
+                    underlineColor="white"
+                    value={selectedPenalty}
+                    placeholder="Select a Penalty"
+                    onFocus={() => setShowPenaltyList(true)}
                   />
-                  </View>
+                  {showPenaltyList && (
+                  <Picker
+                  selectedValue={selectedPenalty}
+                  onValueChange={handlePenaltyChange}
+                  ><Picker.Item label="-- Select Penalty --" value="" />
 
-                  <SelectList 
-        setSelected={(val) => setSelected(val)} 
-        placeholder="Penalty Description"
+                  {penalties.map(penalty => (
+                  <Picker.Item key={penalty.id} label={penalty.penaltyTitle} value={penalty.penaltyTitle} />
+                  ))}
+                  </Picker>
+                  )}
+                </View>
 
-        data={data} 
-        save="value"
+                <View>
+                  <Text style={styles.mainTitle}>Penalty Description</Text>
+                  <TextInput
+                    placeholder="Penalty Description"
+                    placeholderTextColor="#C7D0D9"
+                    value={penaltyDescription}
+                    onChangeText={setPenaltyDescription}
+                    style={styles.input}
+                    underlineColor="white"
+                  />
+                </View>
+
+                <View>
+                  <Text style={styles.mainTitle}>Select Vehicle</Text>
+                  <TextInput
+                    style={styles.input}
+                    underlineColor="white"
+                    value={selectedVehicle}
+                    placeholder="Select a vehicle"
+                    onFocus={() => setShowVehicleList(true)}
+                  />
+                  {showVehicleList && (
+                  <Picker
+                  selectedValue={selectedVehicle}
+                  onValueChange={handleVehicleChange}
+                  ><Picker.Item label="-- Select Vehicle --" value="" />
+                  {vehicles.map(vehicle => (
+                  <Picker.Item key={vehicle.id} label={vehicle.vehicleName} value={vehicle.vehicleName} />
+                  ))}
+                  </Picker>
+                  )}
+                </View>
+    
+    <SelectList 
+     setSelected={(val) => setSelected(val)} 
+     placeholder="Penalty Status"
+     data={data} 
+     save="value"
     />
 
                   <TextInput

@@ -1,4 +1,3 @@
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -10,6 +9,8 @@ import CameraScreen from './components/CameraScreen ';
 import BottomTabs from './components/BottomTabs';
 import HistoryScreen from './components/HistoryScreen';
 import UpdatedForm from './components/UpdatedForm';
+import SplashingScreen from './components/SplashingScreen';
+
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -51,6 +52,11 @@ export default function App() {
           component={UpdatedForm}
           options={{ title: 'UpdatedForm' }}
         />
+        {/* <Stack.Screen
+          name="SplashingScreen"
+          component={SplashingScreen}
+          options={{ title: 'SplashingScreen' }}
+        /> */}
       </Stack.Navigator>
     </NavigationContainer>
   );
