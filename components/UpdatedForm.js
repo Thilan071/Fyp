@@ -12,6 +12,7 @@ import { doc, setDoc, collection, getDocs, getDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import { Picker } from '@react-native-picker/picker';
 import { SelectList } from 'react-native-dropdown-select-list';
+import { MultipleSelectList } from 'react-native-dropdown-select-list'
 
 
 const UpdatedForm = ({ navigation }) => {
@@ -124,7 +125,7 @@ const UpdatedForm = ({ navigation }) => {
       penaltyCost,
     });
 
-    navigation.navigate('CameraScreen');
+    // navigation.navigate('CameraScreen');
   };
   const addDataToFirestore = async (values) => {
     console.log('Val', values);
@@ -160,6 +161,7 @@ const UpdatedForm = ({ navigation }) => {
       console.log('adding data firestore error', error);
     }
   };
+
   const getExpireDate = () => {
     const today = new Date();
     today.setDate(today.getDate() + 14);
@@ -264,7 +266,7 @@ const UpdatedForm = ({ navigation }) => {
                 <View>
                   <Text style={styles.mainTitle}>Case Expire Date</Text>
                   <Text style={styles.input}>
-                    {' '}
+                    Must you have to pay within fourteen days from today:{' '}
                     {getExpireDate()}
                   </Text>
                 </View>
@@ -485,24 +487,15 @@ const UpdatedForm = ({ navigation }) => {
                   
                   <View>
                   <Text style={styles.mainTitle}>Select Penalty</Text>
-                  <TextInput
-                    style={styles.input}
-                    underlineColor="white"
-                    value={selectedPenalty}
-                    placeholder="Select a Penalty"
-                    onFocus={() => setShowPenaltyList(true)}
-                  />
-                  {showPenaltyList && (
-                  <Picker
-                  selectedValue={selectedPenalty}
-                  onValueChange={handlePenaltyChange}
-                  ><Picker.Item label="-- Select Penalty --" value="" />
-
-                  {penalties.map(penalty => (
-                  <Picker.Item key={penalty.id} label={penalty.penaltyTitle} value={penalty.penaltyTitle} />
-                  ))}
-                  </Picker>
-                  )}
+                  <SelectList
+          setSelected={(val) => handlePenaltyChange(val)}
+          placeholder="-- Select Penalty --"
+          data={penalties.map(penalty => ({
+            key: penalty.id,
+            value: penalty.penaltyTitle
+          }))}
+          save="value"
+        />
                 </View>
 
                 <View>
@@ -518,26 +511,18 @@ const UpdatedForm = ({ navigation }) => {
                 </View>
 
                 <View>
-                  <Text style={styles.mainTitle}>Select Vehicle</Text>
-                  <TextInput
-                    style={styles.input}
-                    underlineColor="white"
-                    value={selectedVehicle}
-                    placeholder="Select a vehicle"
-                    onFocus={() => setShowVehicleList(true)}
-                  />
-                  {showVehicleList && (
-                  <Picker
-                  selectedValue={selectedVehicle}
-                  onValueChange={handleVehicleChange}
-                  ><Picker.Item label="-- Select Vehicle --" value="" />
-                  {vehicles.map(vehicle => (
-                  <Picker.Item key={vehicle.id} label={vehicle.vehicleName} value={vehicle.vehicleName} />
-                  ))}
-                  </Picker>
-                  )}
-                </View>
-    
+        <Text style={styles.mainTitle}>Select Vehicle</Text>
+          <SelectList
+            setSelected={(val) => handleVehicleChange(val)}
+            placeholder="-- Select Vehicle --"
+            data={vehicles.map(vehicle => ({
+              key: vehicle.id,
+              value: vehicle.vehicleName
+            }))}
+            save="value"
+          />
+      </View>
+      <Text style={styles.mainTitle}>Select Status</Text>
     <SelectList 
      setSelected={(val) => setSelected(val)} 
      placeholder="Penalty Status"
