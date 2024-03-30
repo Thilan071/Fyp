@@ -7,7 +7,7 @@ import * as MediaLibrary from 'expo-media-library';
 import { storage } from '../firebase';
 import { ref, uploadBytes } from 'firebase/storage';
 
-export default function CameraScreen() {
+export default function CameraScreen({route}) {
   const navigation = useNavigation();
   const [type, setType] = useState(CameraType.back);
   const [permission, requestPermission] = Camera.useCameraPermissions();
@@ -28,7 +28,7 @@ export default function CameraScreen() {
       </View>
     );
   }
-
+console.log('payya',route.params.nic);
   const toggleCameraType = () => {
     setType((current) => (current === CameraType.back ? CameraType.front : CameraType.back));
   };
@@ -66,7 +66,7 @@ export default function CameraScreen() {
         const response = await fetch(imageUri);
         const blob = await response.blob();
         const fileName = `image_${index + 1}.jpg`;
-        const storageRef = ref(storage, `Images/${fileName}`);
+        const storageRef = ref(storage, `Images/${route.params.nic}/${fileName}`);
         await uploadBytes(storageRef, blob);
       });
 

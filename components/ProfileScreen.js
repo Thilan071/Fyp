@@ -5,6 +5,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { storage } from '../firebase';
 import { ref, uploadBytes } from 'firebase/storage';
 
+
 const ProfileScreen = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -86,7 +87,7 @@ const ProfileScreen = () => {
         onChangeText={setUnit}
       />
       <TouchableOpacity style={styles.button} onPress={handleSaveProfile}>
-        <Text style={styles.buttonText}>Edit Profile</Text>
+        <Text style={styles.buttonText}>LOG OUT</Text>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.uploadButton} onPress={handleUploadProfilePicture}>
