@@ -1,25 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import Capture from '../assets/capture.png';
 import { auth } from '../firebase';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { signInWithEmailAndPassword } from 'firebase/auth';
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  useEffect(() => {
+    AsyncStorage.getItem('userLoggedIn').then(userLoggedIn => {
+      if (userLoggedIn) {
+        navigation.navigate('FormScreen');
+      }
+    }).catch(error => console.log('AsyncStorage Error:', error));
+  }, []);
+
   const handleLogin = () => {
     signInWithEmailAndPassword(auth, email, password)
-      .then((data) => {
+      .then(async () => {
+        await AsyncStorage.setItem('userLoggedIn', 'true');
         navigation.navigate('FormScreen');
       })
-      .catch((error) => {
-        console.log('Login Error', error);
-      });
-  };
-
-  const handleRegister = () => {
-    navigation.navigate('SignUpScreen');
+      .catch(error => console.log('Login Error', error));
   };
 
   return (
@@ -30,7 +34,7 @@ const LoginScreen = ({ navigation }) => {
       <TextInput
         style={styles.input}
         placeholder="Officer ID"
-        onChangeText={(text) => setEmail(text)}
+        onChangeText={text => setEmail(text)}
         value={email}
       />
 
@@ -38,7 +42,7 @@ const LoginScreen = ({ navigation }) => {
         style={styles.input} 
         placeholder="Password"
         secureTextEntry={true}
-        onChangeText={(text) => setPassword(text)}
+        onChangeText={text => setPassword(text)}
         value={password}
       />
 
@@ -48,7 +52,7 @@ const LoginScreen = ({ navigation }) => {
 
       <Text style={styles.forgotPassword}>Forgot Password?</Text>
 
-      <TouchableOpacity onPress={handleRegister}>
+      <TouchableOpacity onPress={() => navigation.navigate('SignUpScreen')}>
         <Text style={styles.register}>
           Don't have an account? <Text style={styles.registerLink}>Register here.</Text>
         </Text>
@@ -104,12 +108,6 @@ const styles = StyleSheet.create({
   registerLink: {
     color: '#3498db',
     fontWeight: 'bold',
-  },
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F8F8F8', 
   },
 });
 
