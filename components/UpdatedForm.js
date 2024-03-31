@@ -138,7 +138,7 @@ const addDataToTrafficOics = async()=>{
   });
 }
   const addDataToFirestore = async () => {
-    const docRef = await addDoc(collection(db, "DRIVER DETAILS"), {
+    const docRef = await addDoc(collection(db, "DRIVER DETAILS",nic), {
       caseDate: caseDate,
       caseTime: caseTime,
       caseLocation: caseLocation,
