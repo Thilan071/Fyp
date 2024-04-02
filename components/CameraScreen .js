@@ -28,7 +28,7 @@ export default function CameraScreen({route}) {
       </View>
     );
   }
-console.log('payya',route.params.nic);
+console.log('camera',route.params.nic);
   const toggleCameraType = () => {
     setType((current) => (current === CameraType.back ? CameraType.front : CameraType.back));
   };

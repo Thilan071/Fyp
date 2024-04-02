@@ -1,6 +1,3 @@
-
-
-
 import React, { useState, useEffect } from "react";
 import {
   ScrollView,
@@ -101,7 +98,7 @@ const UpdatedForm = ({ navigation }) => {
   const handleSubmit = async () => {
     console.log("Form submitted cases");
     await addDataToFirestore();
-    await transferDataToCasesCollection(); 
+    // await transferDataToCasesCollection(); 
     
   };
  const addDataToCases = async()=>{
@@ -138,7 +135,7 @@ const addDataToTrafficOics = async()=>{
   });
 }
   const addDataToFirestore = async () => {
-    const docRef = await addDoc(collection(db, "DRIVER DETAILS",nic), {
+    const docRef = await setDoc(doc(db, "DRIVER DETAILS",nic), {
       caseDate: caseDate,
       caseTime: caseTime,
       caseLocation: caseLocation,
@@ -169,26 +166,26 @@ const addDataToTrafficOics = async()=>{
     });
   };
 
-  const transferDataToCasesCollection = async () => {
-    const docRef = doc(db, "DRIVER DETAILS");
-    const docSnap = await getDoc(docRef);
+  // const transferDataToCasesCollection = async () => {
+  //   const docRef = doc(db, "DRIVER DETAILS",nic);
+  //   const docSnap = await getDoc(docRef);
 
-    if (docSnap.exists()) {
-      const data = docSnap.data();
-      await setDoc(doc(db, "cases"), {
-        Address: data.address,
-        Description: data.caseDescription,
-        Location: data.caseLocation,
-        NIC: data.nic,
-        PenaltyNo: data.penaltyId,
-        OfficerNo: data.trafficOicNumber,
-        Direction: data.caseDirection,
-      });
-      console.log("Data transferred to 'cases' successfully");
-    } else {
-      console.error("No such document in 'DRIVER DETAILS'");
-    }
-  };
+  //   if (docSnap.exists()) {
+  //     const data = docSnap.data();
+  //     await setDoc(doc(db, "cases"), {
+  //       Address: data.address,
+  //       Description: data.caseDescription,
+  //       Location: data.caseLocation,
+  //       NIC: data.nic,
+  //       PenaltyNo: data.penaltyId,
+  //       OfficerNo: data.trafficOicNumber,
+  //       Direction: data.caseDirection,
+  //     });
+  //     console.log("Data transferred to 'cases' successfully");
+  //   } else {
+  //     console.error("No such document in 'DRIVER DETAILS'");
+  //   }
+  // };
 
 
   const getExpireDate = () => {
