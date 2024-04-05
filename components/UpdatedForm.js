@@ -568,18 +568,13 @@ const addDataToTrafficOics = async()=>{
                       save="value"
                     />
                   </View>
-                  <Text style={styles.mainTitle}>Select Status</Text>
-                  {/* <SelectList
-                    setSelected={(val) => setSelected(val)}
-                    placeholder="Penalty Status"
-                    data={data}
-                    save="value"
-                  /> */}
+                  {/* <Text style={styles.mainTitle}>Select Status</Text>
+                 
                   <SelectList
   setSelected={setCaseStatus} // Use the setter function from useState
   data={dataForOpenClose}
   save="value"
-/>
+/> */}
 
                   <TextInput
                     placeholder="Penalty Cost"
