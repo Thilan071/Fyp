@@ -31,7 +31,6 @@ const UpdatedForm = ({ navigation }) => {
   const [penaltyId, setPenaltyId] = useState("");
   const [driverId, setDriverId] = useState("");
   const [paymentDate, setPaymentDate] = useState("");
-  // const [paymentStatus, setPaymentStatus] = useState("");
   const [vehicleNumber, setVehicleNumber] = useState("");
   const [vehicleTypeId, setVehicleTypeId] = useState("");
   const [nic, setNic] = useState("");
@@ -149,7 +148,6 @@ const addDataToTrafficOics = async()=>{
       penaltyId: penaltyId,
       driverId: driverId,
       paymentDate: paymentDate,
-      // paymentStatus: paymentStatus,
       vehicleNumber: vehicleNumber,
       vehicleTypeId: vehicleTypeId,
       nic: nic,
@@ -398,15 +396,6 @@ const addDataToTrafficOics = async()=>{
                   />
                 </View>
 
-                {/* <View>
-                  <Text style={styles.mainTitle}>Payment Status</Text>
-                  <SelectList
-                    setSelected={(val) => setPaymentStatus(val)}
-                    data={data}
-                    save="value"
-                  />
-                </View> */}
-
                 <View>
                   <Text style={styles.mainTitle}>Vehicle Number</Text>
                   <TextInput
@@ -568,13 +557,6 @@ const addDataToTrafficOics = async()=>{
                       save="value"
                     />
                   </View>
-                  {/* <Text style={styles.mainTitle}>Select Status</Text>
-                 
-                  <SelectList
-  setSelected={setCaseStatus} // Use the setter function from useState
-  data={dataForOpenClose}
-  save="value"
-/> */}
 
                   <TextInput
                     placeholder="Penalty Cost"
