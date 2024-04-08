@@ -27,12 +27,12 @@ const UpdatedForm = ({ navigation }) => {
   const [trafficOicNumber, setTrafficOicNumber] = useState("");
   const [trafficOicName, settrafficOicName] = useState("");
   const [caseDescription, setCaseDescription] = useState("");
-  const [penaltyPayment, setPenaltyPayment] = useState("");
-  const [penaltyId, setPenaltyId] = useState("");
+  // const [penaltyPayment, setPenaltyPayment] = useState("");
+  // const [penaltyId, setPenaltyId] = useState("");
   const [driverId, setDriverId] = useState("");
-  const [paymentDate, setPaymentDate] = useState("");
+  // const [paymentDate, setPaymentDate] = useState("");
   const [vehicleNumber, setVehicleNumber] = useState("");
-  const [vehicleTypeId, setVehicleTypeId] = useState("");
+  // const [vehicleTypeId, setVehicleTypeId] = useState("");
   const [nic, setNic] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -144,12 +144,12 @@ const addDataToTrafficOics = async()=>{
       trafficOicNumber: trafficOicNumber,
       trafficOicName:trafficOicName,
       caseDescription: caseDescription,
-      penaltyPayment: penaltyPayment,
-      penaltyId: penaltyId,
+      // penaltyPayment: penaltyPayment,
+      // penaltyId: penaltyId,
       driverId: driverId,
-      paymentDate: paymentDate,
+      // paymentDate: paymentDate,
       vehicleNumber: vehicleNumber,
-      vehicleTypeId: vehicleTypeId,
+      // vehicleTypeId: vehicleTypeId,
       nic: nic,
       firstName: firstName,
       lastName: lastName,
@@ -348,7 +348,7 @@ const addDataToTrafficOics = async()=>{
                   />
                 </View>
 
-                <View>
+                {/* <View>
                   <Text style={styles.mainTitle}>Penalty Payment</Text>
                   <TextInput
                     placeholder="10500/="
@@ -358,9 +358,9 @@ const addDataToTrafficOics = async()=>{
                     style={styles.input}
                     underlineColor="white"
                   />
-                </View>
+                </View> */}
 
-                <View>
+                {/* <View>
                   <Text style={styles.mainTitle}>Penalty ID</Text>
                   <TextInput
                     placeholder="0001"
@@ -370,7 +370,7 @@ const addDataToTrafficOics = async()=>{
                     style={styles.input}
                     underlineColor="white"
                   />
-                </View>
+                </View> */}
 
                 <View>
                   <Text style={styles.mainTitle}>Driver ID</Text>
@@ -384,7 +384,7 @@ const addDataToTrafficOics = async()=>{
                   />
                 </View>
 
-                <View>
+                {/* <View>
                   <Text style={styles.mainTitle}>Payment Date</Text>
                   <TextInput
                     placeholder="payment date"
@@ -394,7 +394,7 @@ const addDataToTrafficOics = async()=>{
                     style={styles.input}
                     underlineColor="white"
                   />
-                </View>
+                </View> */}
 
                 <View>
                   <Text style={styles.mainTitle}>Vehicle Number</Text>
@@ -408,7 +408,7 @@ const addDataToTrafficOics = async()=>{
                   />
                 </View>
 
-                <View>
+                {/* <View>
                   <Text style={styles.mainTitle}>Vehicle Type ID</Text>
                   <TextInput
                     placeholder="BHG76"
@@ -418,7 +418,7 @@ const addDataToTrafficOics = async()=>{
                     style={styles.input}
                     underlineColor="white"
                   />
-                </View>
+                </View> */}
 
                 <View>
                   <TouchableOpacity
