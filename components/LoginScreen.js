@@ -186,8 +186,7 @@ const LoginScreen = ({ navigation }) => {
         <Text style={styles.register}>
           Don't have an account?{' '}
           <Text style={styles.registerLink}>Register here.</Text>
-          Don't have an account?{' '}
-          <Text style={styles.registerLink}>Register here.</Text>
+     
         </Text>
       </TouchableOpacity>
     </View>
