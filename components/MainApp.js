@@ -1,6 +1,5 @@
-// MainApp.js
 import React from 'react';
-import { BottomTabs } from './components/BottomTabs'; // Import your Bottom Tabs or main navigation component
+import { BottomTabs } from './components/BottomTabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -10,9 +9,7 @@ const MainApp = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
-        {/* Stack Screens can be your different app screens/components */}
         <Stack.Screen name="Home" component={BottomTabs} options={{ headerShown: false }} />
-        {/* Add more screens as needed */}
       </Stack.Navigator>
     </NavigationContainer>
   );
